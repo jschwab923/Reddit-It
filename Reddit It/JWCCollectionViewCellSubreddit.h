@@ -12,5 +12,6 @@
 
 @property (strong, nonatomic) IBOutlet UIImageView *imageViewHeaderImage;
 @property (strong, nonatomic) IBOutlet UILabel *labelSubredditTitle;
+@property (strong, nonatomic) IBOutlet UILabel *labelDescription;
 
 @end

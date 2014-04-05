@@ -11,7 +11,7 @@
 @protocol JWCRedditControllerDelegate <NSObject>
 
 @required
-- (void)finishedLoadingSubredditList:(NSDictionary *)subredditJSON;
+- (void)finishedLoadingSubredditList:(NSArray *)subreddits withAfter:(NSString *)after;
 @end
 
 @interface JWCRedditController : NSObject
@@ -21,8 +21,8 @@
 @property (nonatomic) NSString *oauthCode;
 @property (nonatomic) NSString *state;
 
-- (NSURL *)oauthURL;
-- (void)requestAccessToken;
+//- (NSURL *)oauthURL;
+//- (void)requestAccessToken;
 
 - (void)getListOfSubreddits:(NSString *)nextParameter;
 
