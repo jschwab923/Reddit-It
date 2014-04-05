@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5C8FC118F0B740001EB920 /* JWCRedditController.m */; };
 		AEF8A48618F07D0000173A9F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF8A48518F07D0000173A9F /* Foundation.framework */; };
 		AEF8A48818F07D0000173A9F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF8A48718F07D0000173A9F /* CoreGraphics.framework */; };
 		AEF8A48A18F07D0000173A9F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF8A48918F07D0000173A9F /* UIKit.framework */; };
@@ -22,7 +23,6 @@
 		AEF8A4AA18F07D0000173A9F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEF8A48918F07D0000173A9F /* UIKit.framework */; };
 		AEF8A4B218F07D0000173A9F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AEF8A4B018F07D0000173A9F /* InfoPlist.strings */; };
 		AEF8A4B418F07D0000173A9F /* Reddit_ItTests.m in Sources */ = {isa = PBXBuildFile; fileRef = AEF8A4B318F07D0000173A9F /* Reddit_ItTests.m */; };
-		AEF8A4BF18F07D2E00173A9F /* JWCRedditController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEF8A4BE18F07D2E00173A9F /* JWCRedditController.m */; };
 		AEF8A4C218F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m in Sources */ = {isa = PBXBuildFile; fileRef = AEF8A4C118F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE5C8FC018F0B740001EB920 /* JWCRedditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCRedditController.h; sourceTree = "<group>"; };
+		AE5C8FC118F0B740001EB920 /* JWCRedditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCRedditController.m; sourceTree = "<group>"; };
 		AEF8A48218F07D0000173A9F /* Reddit It.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Reddit It.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEF8A48518F07D0000173A9F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AEF8A48718F07D0000173A9F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -57,8 +59,6 @@
 		AEF8A4AF18F07D0000173A9F /* Reddit ItTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Reddit ItTests-Info.plist"; sourceTree = "<group>"; };
 		AEF8A4B118F07D0000173A9F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AEF8A4B318F07D0000173A9F /* Reddit_ItTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reddit_ItTests.m; sourceTree = "<group>"; };
-		AEF8A4BD18F07D2E00173A9F /* JWCRedditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JWCRedditController.h; path = ../JWCRedditController.h; sourceTree = "<group>"; };
-		AEF8A4BE18F07D2E00173A9F /* JWCRedditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JWCRedditController.m; path = ../JWCRedditController.m; sourceTree = "<group>"; };
 		AEF8A4C018F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCCollectionViewCellSubreddit.h; sourceTree = "<group>"; };
 		AEF8A4C118F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCCollectionViewCellSubreddit.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,12 +120,12 @@
 		AEF8A48B18F07D0000173A9F /* Reddit It */ = {
 			isa = PBXGroup;
 			children = (
+				AE5C8FC018F0B740001EB920 /* JWCRedditController.h */,
+				AE5C8FC118F0B740001EB920 /* JWCRedditController.m */,
 				AEF8A49418F07D0000173A9F /* JWCAppDelegate.h */,
 				AEF8A49518F07D0000173A9F /* JWCAppDelegate.m */,
 				AEF8A49D18F07D0000173A9F /* JWCViewController.h */,
 				AEF8A49E18F07D0000173A9F /* JWCViewController.m */,
-				AEF8A4BD18F07D2E00173A9F /* JWCRedditController.h */,
-				AEF8A4BE18F07D2E00173A9F /* JWCRedditController.m */,
 				AEF8A49718F07D0000173A9F /* Main_iPhone.storyboard */,
 				AEF8A49A18F07D0000173A9F /* Main_iPad.storyboard */,
 				AEF8A4C018F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.h */,
@@ -264,11 +264,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AEF8A4BF18F07D2E00173A9F /* JWCRedditController.m in Sources */,
 				AEF8A49218F07D0000173A9F /* main.m in Sources */,
 				AEF8A49618F07D0000173A9F /* JWCAppDelegate.m in Sources */,
 				AEF8A4C218F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m in Sources */,
 				AEF8A49F18F07D0000173A9F /* JWCViewController.m in Sources */,
+				AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,6 +483,7 @@
 				AEF8A4B918F07D0000173A9F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AEF8A4BA18F07D0000173A9F /* Build configuration list for PBXNativeTarget "Reddit ItTests" */ = {
 			isa = XCConfigurationList;
@@ -491,6 +492,7 @@
 				AEF8A4BC18F07D0000173A9F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
