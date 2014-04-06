@@ -25,8 +25,8 @@
 @property (nonatomic) NSString *oauthCode;
 @property (nonatomic) NSString *state;
 
-//- (NSURL *)oauthURL;
-//- (void)requestAccessToken;
+- (NSURL *)oauthURL;
+- (void)requestAccessToken;
 
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count;
 - (void)searchSubredditsWithQuery:(NSString *)query;

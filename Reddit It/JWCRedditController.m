@@ -15,9 +15,9 @@
 #define REDDIT_SECRET @"DsoW2WhAik4BN_RpYoINJv9AQ30"
 
 
-#define SUBREDDIT_URL @"http://www.reddit.com/reddits/%@.json"
-#define SUBREDDIT_AFTER_URL @"http://www.reddit.com/reddits/%@.json?after=%@"
-#define SUBREDDIT_AFTER_COUNT_URL @"http://www.reddit.com/reddits/%@.json?after=%@&count=%i"
+#define SUBREDDIT_URL @"http://www.reddit.com/subreddits/%@.json"
+#define SUBREDDIT_AFTER_URL @"http://www.reddit.com/subreddits/%@.json?after=%@"
+#define SUBREDDIT_AFTER_COUNT_URL @"http://www.reddit.com/subreddits/%@.json?after=%@&count=%i"
 
 #define SUBREDDIT_SEARCH_URL @"http://www.reddit.com/subreddits/search.json?q=%@"
 
@@ -25,50 +25,50 @@
 
 @implementation JWCRedditController
 
-//- (NSURL *)oauthURL
-//{
-//    self.state = @"stringthingstringping";
-//
-//    NSString *oauth = [NSString stringWithFormat:REDDIT_OAUTH, self.state, REDDIT_CLIENT_ID, REDDIT_REDIRECT_URI];
-//    oauth = [oauth stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-//    NSURL *oauthURL = [NSURL URLWithString:oauth];
-//    
-//    return oauthURL;
-//}
-//
-//- (void)requestAccessToken
-//{
-//    NSURL *accessTokenUrl = [NSURL URLWithString:@"https://ssl.reddit.com/api/v1/access_token?"];
-//    
-//    NSMutableURLRequest *accessTokenRequest = [NSMutableURLRequest requestWithURL:accessTokenUrl];
-//    [accessTokenRequest setHTTPMethod:@"POST"];
-////    [accessTokenRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-////    [accessTokenRequest setValue:self.state forHTTPHeaderField:@"state"];
-////    [accessTokenRequest setValue:@"identity" forHTTPHeaderField:@"scope"];
-////    [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"client_id"];
-////    [accessTokenRequest setValue:REDDIT_REDIRECT_URI forHTTPHeaderField:@"redirect_uri"];
-////    [accessTokenRequest setValue:self.oauthCode forHTTPHeaderField:@"code"];
-////    [accessTokenRequest setValue:@"authorization_code" forHTTPHeaderField:@"grant_type"];
-//    
-////    [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"username"];
-////    [accessTokenRequest setValue:REDDIT_SECRET forHTTPHeaderField:@"password"];
-//
-//    NSString *postDataString = [NSString stringWithFormat:@"grant_type=authorization_code&code=%@&redirect_uri=%@&username=%@&password=%@", self.oauthCode, REDDIT_REDIRECT_URI, REDDIT_CLIENT_ID, REDDIT_SECRET];
-//    NSData *postData = [NSData dataWithBytes:[postDataString UTF8String]
-//                                      length:[postDataString length]];
-//    
-//    [accessTokenRequest setHTTPBody:postData];
-//    
-//    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-//    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
-//    
-//    NSURLSessionDataTask *dataTask = [urlSession dataTaskWithRequest:accessTokenRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-//        
-//        NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-//        NSLog(@"%@ %@", responseJSON, error);
-//    }];
-//    [dataTask resume];
-//}
+- (NSURL *)oauthURL
+{
+    self.state = @"stringthingstringping";
+
+    NSString *oauth = [NSString stringWithFormat:REDDIT_OAUTH, self.state, REDDIT_CLIENT_ID, REDDIT_REDIRECT_URI];
+    oauth = [oauth stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *oauthURL = [NSURL URLWithString:oauth];
+    
+    return oauthURL;
+}
+
+- (void)requestAccessToken
+{
+    NSURL *accessTokenUrl = [NSURL URLWithString:@"https://ssl.reddit.com/api/v1/access_token?"];
+    
+    NSMutableURLRequest *accessTokenRequest = [NSMutableURLRequest requestWithURL:accessTokenUrl];
+    [accessTokenRequest setHTTPMethod:@"POST"];
+//    [accessTokenRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//    [accessTokenRequest setValue:self.state forHTTPHeaderField:@"state"];
+//    [accessTokenRequest setValue:@"identity" forHTTPHeaderField:@"scope"];
+//    [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"client_id"];
+//    [accessTokenRequest setValue:REDDIT_REDIRECT_URI forHTTPHeaderField:@"redirect_uri"];
+//    [accessTokenRequest setValue:self.oauthCode forHTTPHeaderField:@"code"];
+//    [accessTokenRequest setValue:@"authorization_code" forHTTPHeaderField:@"grant_type"];
+    
+    [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"client_id"];
+    [accessTokenRequest setValue:REDDIT_SECRET forHTTPHeaderField:@"client_secret"];
+
+    NSString *postDataString = [NSString stringWithFormat:@"grant_type=authorization_code&code=%@&redirect_uri=%@", self.oauthCode, REDDIT_REDIRECT_URI];
+    NSData *postData = [NSData dataWithBytes:[postDataString UTF8String]
+                                      length:[postDataString length]];
+    
+    [accessTokenRequest setHTTPBody:postData];
+    
+    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
+    
+    NSURLSessionDataTask *dataTask = [urlSession dataTaskWithRequest:accessTokenRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        
+        NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+        NSLog(@"%@ %@", responseJSON, error);
+    }];
+    [dataTask resume];
+}
 
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count
 {

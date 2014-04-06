@@ -143,14 +143,14 @@
             self.subredditType = @"popular";
             self.selectedArray = self.popularSubreddits;
             if ([self.popularSubreddits count] == 0) {
-                [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+                [self.redditController getListOfSubredditsWithType:self.subredditType after:nil count:0];
             }
             break;
         case 1:
             self.subredditType = @"new";
             self.selectedArray = self.theNewSubreddits;
             if ([self.theNewSubreddits count] == 0) {
-                [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+                [self.redditController getListOfSubredditsWithType:self.subredditType after:nil count:0];
             }
             break;
         default:

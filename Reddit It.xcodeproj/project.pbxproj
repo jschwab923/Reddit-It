@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE339E9518F2082900772111 /* JWCViewControllerOauth.m in Sources */ = {isa = PBXBuildFile; fileRef = AE339E9418F2082900772111 /* JWCViewControllerOauth.m */; };
 		AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5C8FC118F0B740001EB920 /* JWCRedditController.m */; };
 		AE7A8B1618F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7A8B1518F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m */; };
 		AE7A8B1A18F0F5C10039A9CE /* JWCViewControllerSubredditPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7A8B1918F0F5C10039A9CE /* JWCViewControllerSubredditPosts.m */; };
@@ -40,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AE339E9318F2082900772111 /* JWCViewControllerOauth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCViewControllerOauth.h; sourceTree = "<group>"; };
+		AE339E9418F2082900772111 /* JWCViewControllerOauth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCViewControllerOauth.m; sourceTree = "<group>"; };
 		AE5C8FC018F0B740001EB920 /* JWCRedditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCRedditController.h; sourceTree = "<group>"; };
 		AE5C8FC118F0B740001EB920 /* JWCRedditController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCRedditController.m; sourceTree = "<group>"; };
 		AE7A8B1418F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCCollectionVIewCellRedditPost.h; sourceTree = "<group>"; };
@@ -140,16 +143,18 @@
 		AEF8A48B18F07D0000173A9F /* Reddit It */ = {
 			isa = PBXGroup;
 			children = (
-				AE5C8FC018F0B740001EB920 /* JWCRedditController.h */,
-				AE5C8FC118F0B740001EB920 /* JWCRedditController.m */,
 				AEF8A49418F07D0000173A9F /* JWCAppDelegate.h */,
 				AEF8A49518F07D0000173A9F /* JWCAppDelegate.m */,
+				AE5C8FC018F0B740001EB920 /* JWCRedditController.h */,
+				AE5C8FC118F0B740001EB920 /* JWCRedditController.m */,
 				AEF8A49D18F07D0000173A9F /* JWCViewController.h */,
 				AEF8A49E18F07D0000173A9F /* JWCViewController.m */,
 				AE7A8B1818F0F5C10039A9CE /* JWCViewControllerSubredditPosts.h */,
 				AE7A8B1918F0F5C10039A9CE /* JWCViewControllerSubredditPosts.m */,
 				AEAB980018F1EA420069C9D7 /* JWCViewControllerPostDetails.h */,
 				AEAB980118F1EA420069C9D7 /* JWCViewControllerPostDetails.m */,
+				AE339E9318F2082900772111 /* JWCViewControllerOauth.h */,
+				AE339E9418F2082900772111 /* JWCViewControllerOauth.m */,
 				AEF8A49718F07D0000173A9F /* Main_iPhone.storyboard */,
 				AEF8A49A18F07D0000173A9F /* Main_iPad.storyboard */,
 				AE7A8B1718F0F5A80039A9CE /* Collection View Cells */,
@@ -293,6 +298,7 @@
 				AEF8A4C218F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m in Sources */,
 				AEF8A49F18F07D0000173A9F /* JWCViewController.m in Sources */,
 				AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */,
+				AE339E9518F2082900772111 /* JWCViewControllerOauth.m in Sources */,
 				AE7A8B1A18F0F5C10039A9CE /* JWCViewControllerSubredditPosts.m in Sources */,
 				AE7A8B1618F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m in Sources */,
 			);

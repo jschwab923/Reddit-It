@@ -68,14 +68,22 @@
         NSDictionary *currentPostData = [currentPost objectForKey:@"data"];
         
         NSString *postID = [currentPostData objectForKey:@"id"];
+    
+        redditPostCell.imageViewThumbnail.image = nil;
+        
+        if (![[currentPostData objectForKey:@"thumbnail"] isEqualToString:@""]) {
+            redditPostCell.imageViewThumbnail.hidden = NO;
+            if (![self.postThumbnails objectForKey:postID]) {
+                [self.redditController downloadThumbnailImage:currentPost];
+            } else {
+                redditPostCell.imageViewThumbnail.image = [self.postThumbnails objectForKey:postID];
+            }
+        } else {
+            redditPostCell.imageViewThumbnail.hidden = YES;
+            redditPostCell.labelPostText.frame = redditPostCell.bounds;
+        }
         
         redditPostCell.labelPostText.text = [currentPostData objectForKey:@"title"];
-        redditPostCell.imageViewThumbnail.image = nil;
-        if (![self.postThumbnails objectForKey:postID]) {
-            [self.redditController downloadThumbnailImage:currentPost];
-        } else {
-            redditPostCell.imageViewThumbnail.image = [self.postThumbnails objectForKey:postID];
-        }
     }
     
     return redditPostCell;
