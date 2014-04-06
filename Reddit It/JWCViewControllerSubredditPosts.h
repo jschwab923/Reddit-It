@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JWCViewControllerSubredditViewController : UIViewController
+@interface JWCViewControllerSubredditPosts : UIViewController
 
 @property (nonatomic) NSDictionary *subredditInfo;
 

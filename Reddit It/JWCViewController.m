@@ -9,7 +9,7 @@
 #import "JWCViewController.h"
 #import "JWCRedditController.h"
 #import "JWCCollectionViewCellSubreddit.h"
-#import "JWCViewControllerSubredditViewController.h"
+#import "JWCViewControllerSubredditPosts.h"
 
 @interface JWCViewController ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, UISearchBarDelegate>
@@ -30,9 +30,6 @@
 @property (strong, nonatomic) NSString *subredditAfter;
 @property (nonatomic) NSInteger subredditCount;
 @property (strong, nonatomic) NSString *subredditType;
-
-@property (strong, nonatomic) NSDictionary *subredditSelected;
-
 
 @end
 
@@ -67,15 +64,6 @@
 #pragma mark - JWCRedditControllerDelegate
 - (void)finishedLoadingJSON:(NSArray *)subreddits withAfter:(NSString *)after
 {
-    
-//    if (self.segmentedControlBrowseSearch.selectedSegmentIndex == 1) {
-//        [self.searchedSubreddits addObjectsFromArray:subreddits];
-//    } else if (self.segmentedControlSubredditSections.selectedSegmentIndex == 0) {
-//        [self.popularSubreddits addObjectsFromArray:subreddits];
-//    } else {
-//        [self.theNewSubreddits addObjectsFromArray:subreddits];
-//    }
-//
     [self.selectedArray addObjectsFromArray:subreddits];
     self.subredditAfter = after;
     self.subredditCount = [subreddits count];
@@ -97,9 +85,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    JWCCollectionViewCellSubreddit *subredditCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SubredditCell"
-                                                                                            forIndexPath:indexPath];
+    JWCCollectionViewCellSubreddit *subredditCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SubredditCell" forIndexPath:indexPath];
 
     [self populateCellWithArray:self.selectedArray cell:subredditCell andRow:indexPath.row];
     return subredditCell;
@@ -116,13 +102,6 @@
     } else {
         subredditCell.labelSubredditTitle.text = @"Subreddit Title";
     }
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSDictionary *selectedSubredit = self.selectedArray[indexPath.row];
-    NSDictionary *subreditInfo = [selectedSubredit objectForKey:@"data"];
-    self.subredditSelected = subreditInfo;
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -190,8 +169,14 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    JWCViewControllerSubredditViewController *destinationViewController = (JWCViewControllerSubredditViewController *)segue.destinationViewController;
-    destinationViewController.subredditInfo = self.subredditSelected;
+    JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;
+    
+    NSArray *selectedIndexPaths = [self.collectionViewSubreddits indexPathsForSelectedItems];
+    NSIndexPath *selectedIndexPath = selectedIndexPaths[0];
+
+    NSDictionary *selectedSubreddit = self.selectedArray[selectedIndexPath.row];
+    NSDictionary *selectedSubredditInfo = [selectedSubreddit objectForKey:@"data"];
+    [destinationViewController setSubredditInfo:selectedSubredditInfo];
 }
 
 #pragma mark - Oauth Methods

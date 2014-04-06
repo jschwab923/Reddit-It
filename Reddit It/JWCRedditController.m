@@ -21,7 +21,7 @@
 
 #define SUBREDDIT_SEARCH_URL @"http://www.reddit.com/subreddits/search.json?q=%@"
 
-#define SUBREDDIT_POSTS_URL @"http://www.reddit.com/r/%@.json"
+#define SUBREDDIT_POSTS_URL @"http://www.reddit.com/%@.json"
 
 @implementation JWCRedditController
 

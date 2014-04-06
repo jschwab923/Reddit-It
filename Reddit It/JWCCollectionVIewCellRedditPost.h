@@ -10,4 +10,6 @@
 
 @interface JWCCollectionViewCellRedditPost : UICollectionViewCell
 
+@property (weak, nonatomic) IBOutlet UILabel *labelPostText;
+
 @end

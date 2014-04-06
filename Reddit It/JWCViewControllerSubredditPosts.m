@@ -6,19 +6,20 @@
 //  Copyright (c) 2014 Jeff Writes Code. All rights reserved.
 //
 
-#import "JWCViewControllerSubredditViewController.h"
+#import "JWCViewControllerSubredditPosts.h"
 #import "JWCRedditController.h"
 #import "JWCCollectionViewCellRedditPost.h"
 
-@interface JWCViewControllerSubredditViewController ()
+@interface JWCViewControllerSubredditPosts ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
 
-@property (nonatomic) NSMutableArray *redditPosts;
+@property (nonatomic) NSArray *redditPosts;
 @property (nonatomic) JWCRedditController *redditController;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionViewPosts;
 
 @end
 
-@implementation JWCViewControllerSubredditViewController
+@implementation JWCViewControllerSubredditPosts
 
 - (void)viewDidLoad
 {
@@ -27,8 +28,12 @@
     self.title = [self.subredditInfo objectForKey:@"display_name"];
     
     self.redditController = [JWCRedditController new];
+    self.redditController.delegate = self;
     
-    [self.redditController getListOfPostsFromSubreddit:[self.subredditInfo objectForKey:@"title"]];
+    self.collectionViewPosts.dataSource = self;
+    self.collectionViewPosts.delegate = self;
+    
+    [self.redditController getListOfPostsFromSubreddit:[self.subredditInfo objectForKey:@"url"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,7 +56,14 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    JWCCollectionViewCellRedditPost *redditPostCell = [JWCCollectionViewCellRedditPost new];
+    JWCCollectionViewCellRedditPost *redditPostCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"PostCell" forIndexPath:indexPath];
+    
+    if ([self.redditPosts count] > 0) {
+        NSDictionary *currentPost = [self.redditPosts objectAtIndex:indexPath.row];
+        NSDictionary *currentPostData = [currentPost objectForKey:@"data"];
+
+        redditPostCell.labelPostText.text = [currentPostData objectForKey:@"title"];
+    }
     
     return redditPostCell;
 }
@@ -59,8 +71,10 @@
 #pragma mark - JWCRedditControllerDelegate
 - (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after
 {
-    NSLog(@"%@", JSON);
+    self.redditPosts = JSON;
+    [self.collectionViewPosts reloadData];
 }
+
 
 /*
 #pragma mark - Navigation
