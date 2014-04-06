@@ -15,8 +15,11 @@
 #define REDDIT_SECRET @"DsoW2WhAik4BN_RpYoINJv9AQ30"
 
 
-#define SUBREDDIT_URL @"http://www.reddit.com/reddits/.json"
-#define SUBREDDIT_AFTER_URL @"http://www.reddit.com/reddits/.json?after=%@"
+#define SUBREDDIT_URL @"http://www.reddit.com/reddits/%@.json"
+#define SUBREDDIT_AFTER_URL @"http://www.reddit.com/reddits/%@.json?after=%@"
+#define SUBREDDIT_AFTER_COUNT_URL @"http://www.reddit.com/reddits/%@.json?after=%@&count=%i"
+
+#define SUBREDDIT_SEARCH_URL @"http://www.reddit.com/subreddits/search.json?q=%@"
 
 @implementation JWCRedditController
 
@@ -65,17 +68,35 @@
 //    [dataTask resume];
 //}
 
-- (void)getListOfSubreddits:(NSString *)afterParameter
+- (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count
 {
     NSString *subbredditURL;
     if (afterParameter) {
-        subbredditURL = [NSString stringWithFormat:SUBREDDIT_AFTER_URL, afterParameter];
+        if (count) {
+            subbredditURL = [NSString stringWithFormat:SUBREDDIT_AFTER_COUNT_URL, type, afterParameter, count];
+        } else {
+            subbredditURL = [NSString stringWithFormat:SUBREDDIT_AFTER_URL, type, afterParameter];
+        }
     } else {
-        subbredditURL = SUBREDDIT_URL;
+        subbredditURL = [NSString stringWithFormat:SUBREDDIT_URL, type];
     }
     
     NSURL *url = [NSURL URLWithString:subbredditURL];
+    [self queryRedditWithURL:url];
+}
+
+- (void)searchSubredditsWithQuery:(NSString *)query
+{
+    NSString *queryString = [NSString stringWithFormat:SUBREDDIT_SEARCH_URL, query];
+    queryString = [queryString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *url = [NSURL URLWithString:queryString];
     
+    [self queryRedditWithURL:url];
+}
+
+- (void)queryRedditWithURL:(NSURL *)url
+{
+
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
     
@@ -97,7 +118,6 @@
         }
     }];
     [dataTask resume];
-    
 }
 
 @end

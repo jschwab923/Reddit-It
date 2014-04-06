@@ -10,13 +10,25 @@
 #import "JWCRedditController.h"
 #import "JWCCollectionViewCellSubreddit.h"
 
-@interface JWCViewController () <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface JWCViewController ()
+<JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, UISearchBarDelegate>
 
+@property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControlBrowseSearch;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionViewSubreddits;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBarSubreddits;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControlSubredditSections;
+
 
 @property (strong, nonatomic) JWCRedditController *redditController;
-@property (strong, nonatomic) NSArray *subreddits;
+@property (strong, nonatomic) NSMutableArray *popularSubreddits;
+@property (strong, nonatomic) NSMutableArray *theNewSubreddits;
+@property (strong, nonatomic) NSMutableArray *searchedSubreddits;
+
+@property (weak, nonatomic) NSMutableArray *selectedArray;
+
 @property (strong, nonatomic) NSString *subredditAfter;
+@property (nonatomic) NSInteger subredditCount;
+@property (strong, nonatomic) NSString *subredditType;
 
 @end
 
@@ -31,7 +43,14 @@
     self.collectionViewSubreddits.dataSource = self;
     self.collectionViewSubreddits.delegate = self;
     
-    [self.redditController getListOfSubreddits:nil];
+    self.searchBarSubreddits.delegate = self;
+    
+    self.popularSubreddits = [NSMutableArray new];
+    self.theNewSubreddits = [NSMutableArray new];
+    self.searchedSubreddits = [NSMutableArray new];
+    
+    self.selectedArray = self.popularSubreddits;
+    [self.redditController getListOfSubredditsWithType:@"" after:nil count:0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,8 +62,18 @@
 #pragma mark - JWCRedditControllerDelegate
 - (void)finishedLoadingSubredditList:(NSArray *)subreddits withAfter:(NSString *)after
 {
-    self.subreddits = subreddits;
+    
+//    if (self.segmentedControlBrowseSearch.selectedSegmentIndex == 1) {
+//        [self.searchedSubreddits addObjectsFromArray:subreddits];
+//    } else if (self.segmentedControlSubredditSections.selectedSegmentIndex == 0) {
+//        [self.popularSubreddits addObjectsFromArray:subreddits];
+//    } else {
+//        [self.theNewSubreddits addObjectsFromArray:subreddits];
+//    }
+//
+    [self.selectedArray addObjectsFromArray:subreddits];
     self.subredditAfter = after;
+    self.subredditCount = [subreddits count];
     
     [self.collectionViewSubreddits reloadData];
 }
@@ -57,7 +86,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 25;
+    return [self.selectedArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
@@ -65,9 +94,16 @@
 {
     
     JWCCollectionViewCellSubreddit *subredditCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SubredditCell"
-                                                                                              forIndexPath:indexPath];
-    if (self.subreddits) {
-        NSDictionary *currentSubreddit = self.subreddits[indexPath.row];
+                                                                                            forIndexPath:indexPath];
+
+    [self populateCellWithArray:self.selectedArray cell:subredditCell andRow:indexPath.row];
+    return subredditCell;
+}
+
+- (void)populateCellWithArray:(NSArray *)currentSubredditArray cell:(JWCCollectionViewCellSubreddit *)subredditCell andRow:(NSInteger)row
+{
+    if ([currentSubredditArray count] > 0) {
+        NSDictionary *currentSubreddit = currentSubredditArray[row];
         NSDictionary *subredditInfo = [currentSubreddit objectForKey:@"data"];
         
         subredditCell.labelSubredditTitle.text = [subredditInfo objectForKey:@"display_name"];
@@ -75,12 +111,70 @@
     } else {
         subredditCell.labelSubredditTitle.text = @"Subreddit Title";
     }
-    
-    return subredditCell;
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSArray *visibleIndexPaths = [self.collectionViewSubreddits indexPathsForVisibleItems];
+    
+    for (NSIndexPath *visibleIndexPath in visibleIndexPaths) {
+        if (visibleIndexPath.row == [self.selectedArray count]-1) {
+            [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+        }
+    }
+}
 
+#pragma mark - IBOutlets
+- (IBAction)switchedSubredditBrowseSearch:(UISegmentedControl *)browseType
+{
+    switch (browseType.selectedSegmentIndex) {
+        case 0:
+            self.selectedArray = self.popularSubreddits;
+            self.segmentedControlSubredditSections.hidden = NO;
+            self.searchBarSubreddits.hidden = YES;
+            [self.collectionViewSubreddits reloadData];
+            break;
+        case 1:
+            self.selectedArray = self.theNewSubreddits;
+            self.segmentedControlSubredditSections.hidden = YES;
+            self.searchBarSubreddits.hidden = NO;
+            break;
+        default:
+            break;
+    }
+}
 
+- (IBAction)switchSubredditSection:(UISegmentedControl *)subredditSection
+{
+    switch (subredditSection.selectedSegmentIndex) {
+        case 0:
+            self.subredditType = @"popular";
+            self.selectedArray = self.popularSubreddits;
+            if ([self.popularSubreddits count] == 0) {
+                [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+            }
+            break;
+        case 1:
+            self.subredditType = @"new";
+            self.selectedArray = self.theNewSubreddits;
+            if ([self.theNewSubreddits count] == 0) {
+                [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+            }
+            break;
+        default:
+            break;
+    }
+    [self.collectionViewSubreddits reloadData];
+}
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self.searchBarSubreddits endEditing:YES];
+    [self.searchedSubreddits removeAllObjects];
+    [self.redditController searchSubredditsWithQuery:searchBar.text];
+}
 
 #pragma mark - Oauth Methods
 //- (void)startOauth

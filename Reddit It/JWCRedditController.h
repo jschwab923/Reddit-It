@@ -24,6 +24,7 @@
 //- (NSURL *)oauthURL;
 //- (void)requestAccessToken;
 
-- (void)getListOfSubreddits:(NSString *)nextParameter;
+- (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count;
+- (void)searchSubredditsWithQuery:(NSString *)query;
 
 @end
