@@ -9,6 +9,7 @@
 #import "JWCViewController.h"
 #import "JWCRedditController.h"
 #import "JWCCollectionViewCellSubreddit.h"
+#import "JWCViewControllerSubredditViewController.h"
 
 @interface JWCViewController ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, UISearchBarDelegate>
@@ -30,6 +31,9 @@
 @property (nonatomic) NSInteger subredditCount;
 @property (strong, nonatomic) NSString *subredditType;
 
+@property (strong, nonatomic) NSDictionary *subredditSelected;
+
+
 @end
 
 @implementation JWCViewController
@@ -37,6 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.redditController = [JWCRedditController new];
     self.redditController.delegate = self;
     
@@ -60,7 +65,7 @@
 }
 
 #pragma mark - JWCRedditControllerDelegate
-- (void)finishedLoadingSubredditList:(NSArray *)subreddits withAfter:(NSString *)after
+- (void)finishedLoadingJSON:(NSArray *)subreddits withAfter:(NSString *)after
 {
     
 //    if (self.segmentedControlBrowseSearch.selectedSegmentIndex == 1) {
@@ -113,6 +118,13 @@
     }
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *selectedSubredit = self.selectedArray[indexPath.row];
+    NSDictionary *subreditInfo = [selectedSubredit objectForKey:@"data"];
+    self.subredditSelected = subreditInfo;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -136,7 +148,7 @@
             [self.collectionViewSubreddits reloadData];
             break;
         case 1:
-            self.selectedArray = self.theNewSubreddits;
+            self.selectedArray = self.searchedSubreddits;
             self.segmentedControlSubredditSections.hidden = YES;
             self.searchBarSubreddits.hidden = NO;
             break;
@@ -174,6 +186,12 @@
     [self.searchBarSubreddits endEditing:YES];
     [self.searchedSubreddits removeAllObjects];
     [self.redditController searchSubredditsWithQuery:searchBar.text];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    JWCViewControllerSubredditViewController *destinationViewController = (JWCViewControllerSubredditViewController *)segue.destinationViewController;
+    destinationViewController.subredditInfo = self.subredditSelected;
 }
 
 #pragma mark - Oauth Methods

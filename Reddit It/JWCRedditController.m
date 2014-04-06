@@ -21,6 +21,8 @@
 
 #define SUBREDDIT_SEARCH_URL @"http://www.reddit.com/subreddits/search.json?q=%@"
 
+#define SUBREDDIT_POSTS_URL @"http://www.reddit.com/r/%@.json"
+
 @implementation JWCRedditController
 
 //- (NSURL *)oauthURL
@@ -94,6 +96,16 @@
     [self queryRedditWithURL:url];
 }
 
+- (void)getListOfPostsFromSubreddit:(NSString *)subreddit
+{
+    NSString *postsURL = [NSString stringWithFormat:SUBREDDIT_POSTS_URL, subreddit];
+    postsURL = [postsURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    NSURL *queryURL = [NSURL URLWithString:postsURL];
+    
+    [self queryRedditWithURL:queryURL];
+}
+
 - (void)queryRedditWithURL:(NSURL *)url
 {
 
@@ -111,7 +123,7 @@
             NSString *after = [dataDictionary objectForKey:@"after"];
             
             dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.delegate finishedLoadingSubredditList:children withAfter:after];
+                [self.delegate finishedLoadingJSON:children withAfter:after];
             });
         } else {
             NSLog(@"%@", error);

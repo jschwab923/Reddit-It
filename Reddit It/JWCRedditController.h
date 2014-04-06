@@ -11,7 +11,7 @@
 @protocol JWCRedditControllerDelegate <NSObject>
 
 @required
-- (void)finishedLoadingSubredditList:(NSArray *)subreddits withAfter:(NSString *)after;
+- (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after;
 @end
 
 @interface JWCRedditController : NSObject
@@ -26,5 +26,6 @@
 
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count;
 - (void)searchSubredditsWithQuery:(NSString *)query;
+- (void)getListOfPostsFromSubreddit:(NSString *)subreddit;
 
 @end
