@@ -11,5 +11,6 @@
 @interface JWCCollectionViewCellRedditPost : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *labelPostText;
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewThumbnail;
 
 @end

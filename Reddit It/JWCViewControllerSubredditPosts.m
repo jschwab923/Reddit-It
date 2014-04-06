@@ -9,6 +9,7 @@
 #import "JWCViewControllerSubredditPosts.h"
 #import "JWCRedditController.h"
 #import "JWCCollectionViewCellRedditPost.h"
+#import "JWCViewControllerPostDetails.h"
 
 @interface JWCViewControllerSubredditPosts ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
@@ -16,6 +17,8 @@
 @property (nonatomic) NSArray *redditPosts;
 @property (nonatomic) JWCRedditController *redditController;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionViewPosts;
+
+@property (nonatomic) NSMutableDictionary *postThumbnails;
 
 @end
 
@@ -32,6 +35,8 @@
     
     self.collectionViewPosts.dataSource = self;
     self.collectionViewPosts.delegate = self;
+    
+    self.postThumbnails = [NSMutableDictionary new];
     
     [self.redditController getListOfPostsFromSubreddit:[self.subredditInfo objectForKey:@"url"]];
 }
@@ -61,8 +66,16 @@
     if ([self.redditPosts count] > 0) {
         NSDictionary *currentPost = [self.redditPosts objectAtIndex:indexPath.row];
         NSDictionary *currentPostData = [currentPost objectForKey:@"data"];
-
+        
+        NSString *postID = [currentPostData objectForKey:@"id"];
+        
         redditPostCell.labelPostText.text = [currentPostData objectForKey:@"title"];
+        redditPostCell.imageViewThumbnail.image = nil;
+        if (![self.postThumbnails objectForKey:postID]) {
+            [self.redditController downloadThumbnailImage:currentPost];
+        } else {
+            redditPostCell.imageViewThumbnail.image = [self.postThumbnails objectForKey:postID];
+        }
     }
     
     return redditPostCell;
@@ -73,18 +86,32 @@
 {
     self.redditPosts = JSON;
     [self.collectionViewPosts reloadData];
+    
+}
+
+- (void)finishedDownloadingImageWithData:(NSData *)imageData andID:(NSString *)ID
+{
+    UIImage *postThumbnail = [UIImage imageWithData:imageData];
+    [self.postThumbnails setObject:postThumbnail forKey:ID];
+    
+    NSLog(@"Image Downloaded");
+    
+    [self.collectionViewPosts reloadData];
 }
 
 
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSIndexPath *selectedIndexPath = [[self.collectionViewPosts indexPathsForSelectedItems] firstObject];
+    JWCViewControllerPostDetails *vc = (JWCViewControllerPostDetails *)[segue destinationViewController];
+    
+    NSDictionary *selectedPost = [self.redditPosts objectAtIndex:selectedIndexPath.row];
+    NSDictionary *postData = [selectedPost objectForKey:@"data"];
+    
+    vc.postURL = [NSURL URLWithString:[postData objectForKey:@"url"]];
 }
-*/
+
 
 @end

@@ -12,6 +12,10 @@
 
 @required
 - (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after;
+
+@optional
+- (void)finishedDownloadingImageWithData:(NSData *)imageData andID:(NSString *)id;
+
 @end
 
 @interface JWCRedditController : NSObject
@@ -27,5 +31,6 @@
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count;
 - (void)searchSubredditsWithQuery:(NSString *)query;
 - (void)getListOfPostsFromSubreddit:(NSString *)subreddit;
+- (void)downloadThumbnailImage:(NSDictionary *)JSON;
 
 @end

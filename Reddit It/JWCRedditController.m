@@ -106,6 +106,34 @@
     [self queryRedditWithURL:queryURL];
 }
 
+// Takes a dictionary that either contains and array of post dictionarys, or just one post dictionary.
+- (void)downloadThumbnailImage:(NSDictionary *)JSON
+{
+    NSMutableDictionary *thumbnailIDandURL = [NSMutableDictionary new];
+
+    NSDictionary *data = [JSON objectForKey:@"data"];
+    
+    NSURL *thumbnailURL = [NSURL URLWithString:[data objectForKey:@"thumbnail"]];
+    NSString *ID = [data objectForKey:@"id"];
+    
+    [thumbnailIDandURL setObject:thumbnailURL forKey:ID];
+
+    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
+    
+    NSURLSessionDownloadTask *downloadTask = [urlSession downloadTaskWithURL:thumbnailURL completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            NSData *imageData = [NSData dataWithContentsOfURL:location];
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                [self.delegate finishedDownloadingImageWithData:imageData
+                                                          andID:[[thumbnailIDandURL allKeysForObject:thumbnailURL] firstObject]];
+            });
+        }
+    }];
+    [downloadTask resume];
+   
+}
+
 - (void)queryRedditWithURL:(NSURL *)url
 {
 
