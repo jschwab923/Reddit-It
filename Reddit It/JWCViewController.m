@@ -12,13 +12,20 @@
 #import "JWCViewControllerSubredditPosts.h"
 
 @interface JWCViewController ()
-<JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, UISearchBarDelegate>
+<JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, UISearchBarDelegate>
+{
+    CGRect _originalCollectionViewFrame;
+    CGRect _originalContainerViewFrame;
+}
+
+@property (weak, nonatomic) IBOutlet UIView *viewContainer;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControlBrowseSearch;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionViewSubreddits;
-@property (strong, nonatomic) IBOutlet UISearchBar *searchBarSubreddits;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentedControlSubredditSections;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControlPostSubreddit;
 
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBarSubreddits;
 
 @property (strong, nonatomic) JWCRedditController *redditController;
 @property (strong, nonatomic) NSMutableArray *popularSubreddits;
@@ -38,6 +45,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    for (UIView *subView in self.searchBarSubreddits.subviews) {
+        if([subView isKindOfClass: [UITextField class]])
+            [(UITextField *)subView setKeyboardAppearance: UIKeyboardAppearanceAlert];
+    }
+    
+    self.viewContainer.autoresizesSubviews = YES;
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.viewContainer.bounds), CGRectGetWidth(self.viewContainer.frame), 1)];
+    line.backgroundColor = [UIColor whiteColor];
+    [self.viewContainer addSubview:line];
+    
+    _originalCollectionViewFrame = self.collectionViewSubreddits.frame;
+    _originalContainerViewFrame = self.viewContainer.frame;
     
     self.redditController = [JWCRedditController new];
     self.redditController.delegate = self;
@@ -104,6 +125,13 @@
     }
 }
 
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGSize size = CGSizeMake(CGRectGetWidth(self.collectionViewSubreddits.frame)-10, 80);
+    return size;
+}
+
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -116,7 +144,68 @@
     }
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGPoint scrollViewContentOffset = [scrollView contentOffset];
+    if (scrollViewContentOffset.y > 70) {
+        [UIView animateKeyframesWithDuration:.2 delay:0 options:0 animations:^{
+            self.collectionViewSubreddits.frame = CGRectMake(0, 64, CGRectGetWidth(self.collectionViewSubreddits.frame), CGRectGetHeight(self.view.frame) - 64);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:.7 animations:^{
+                self.viewContainer.center = CGPointMake(CGRectGetMidX(self.viewContainer.frame), -CGRectGetHeight(self.viewContainer.frame)/2+20);
+            } completion:^(BOOL finished) {
+                
+            }];
+        }];
+    } else if (CGRectGetHeight(self.collectionViewSubreddits.frame) == CGRectGetHeight(self.view.frame)-64) {
+        if (scrollViewContentOffset.y < 0) {
+            [self collectionViewSwipedDown:nil];
+        }
+    }
+}
+
+- (void)collectionViewSwipedDown:(UISwipeGestureRecognizer *)downSwipe
+{
+    CGFloat scrollViewContentOffsetY = self.collectionViewSubreddits.contentOffset.y;
+    if (CGRectGetHeight(self.collectionViewSubreddits.frame) == CGRectGetHeight(self.view.frame)-64 && scrollViewContentOffsetY == 0) {
+        [UIView animateKeyframesWithDuration:.7 delay:0 options:0 animations:^{
+            self.viewContainer.frame = _originalContainerViewFrame;
+            self.collectionViewSubreddits.frame = CGRectMake(_originalCollectionViewFrame.origin.x, _originalCollectionViewFrame.origin.y, CGRectGetWidth(_originalCollectionViewFrame), CGRectGetHeight(self.collectionViewSubreddits.frame));
+        } completion:^(BOOL finished) {
+            self.collectionViewSubreddits.frame = _originalCollectionViewFrame;
+        }];
+    } else if (CGRectGetHeight(self.collectionViewSubreddits.frame) == CGRectGetHeight(self.view.frame)-64 &&scrollViewContentOffsetY < -50) {
+        [UIView animateKeyframesWithDuration:.7 delay:0 options:0 animations:^{
+            self.viewContainer.frame = _originalContainerViewFrame;
+            self.collectionViewSubreddits.frame = CGRectMake(_originalCollectionViewFrame.origin.x, _originalCollectionViewFrame.origin.y, CGRectGetWidth(_originalCollectionViewFrame), CGRectGetHeight(self.collectionViewSubreddits.frame));
+        } completion:^(BOOL finished) {
+            self.collectionViewSubreddits.frame = _originalCollectionViewFrame;
+        }];
+    }
+}
+
 #pragma mark - IBOutlets
+- (IBAction)switchedPostsSubreddits:(UISegmentedControl *)postOrSubreddit
+{
+    switch (postOrSubreddit.selectedSegmentIndex) {
+        case 0:
+            [self.segmentedControlSubredditSections removeAllSegments];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"hot" atIndex:0 animated:YES];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"new" atIndex:1 animated:YES];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"rising" atIndex:2 animated:YES];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"controversial" atIndex:3 animated:YES];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"top" atIndex:4 animated:YES];
+            break;
+        case 1:
+            [self.segmentedControlSubredditSections removeAllSegments];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"popular" atIndex:0 animated:YES];
+            [self.segmentedControlSubredditSections insertSegmentWithTitle:@"new" atIndex:1 animated:YES];
+            break;
+        default:
+            break;
+    }
+}
+
 - (IBAction)switchedSubredditBrowseSearch:(UISegmentedControl *)browseType
 {
     switch (browseType.selectedSegmentIndex) {
@@ -167,6 +256,7 @@
     [self.redditController searchSubredditsWithQuery:searchBar.text];
 }
 
+#pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;

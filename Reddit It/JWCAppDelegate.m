@@ -13,6 +13,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    NSDictionary *textAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    [UIFont fontWithName:@"Helvetica" size:18], NSFontAttributeName, [UIColor lightTextColor], NSForegroundColorAttributeName, nil];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
+    
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage new]
+                                       forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage new]];
+
     
     return YES;
 }

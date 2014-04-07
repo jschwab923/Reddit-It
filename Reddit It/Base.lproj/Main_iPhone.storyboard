@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--View Controller - Subreddits-->
+        <!--View Controller - Reddit It-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="vXZ-lx-hvc" customClass="JWCViewController" sceneMemberID="viewController">
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-EJ-zrS">
-                                <rect key="frame" x="0.0" y="164" width="320" height="410"/>
+                                <rect key="frame" x="0.0" y="210" width="320" height="364"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="bWd-pg-FjN">
@@ -34,16 +34,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="315" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Subreddit Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQM-RS-OLD">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subreddit Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQM-RS-OLD">
                                                     <rect key="frame" x="20" y="0.0" width="260" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="229" translatesAutoresizingMaskIntoConstraints="NO" id="4Pq-im-IAP">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="229" translatesAutoresizingMaskIntoConstraints="NO" id="4Pq-im-IAP">
                                                     <rect key="frame" x="31" y="20" width="229" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="60" id="yEi-BW-YGy"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -52,6 +55,14 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstItem="pQM-RS-OLD" firstAttribute="leading" secondItem="PiW-Ew-3Sb" secondAttribute="leading" constant="20" id="HHI-nO-TAk"/>
+                                            <constraint firstItem="4Pq-im-IAP" firstAttribute="top" secondItem="pQM-RS-OLD" secondAttribute="bottom" constant="-1" id="SIC-lb-gv0"/>
+                                            <constraint firstAttribute="bottom" secondItem="4Pq-im-IAP" secondAttribute="bottom" id="fbO-f8-q3a"/>
+                                            <constraint firstAttribute="trailing" secondItem="4Pq-im-IAP" secondAttribute="trailing" constant="55" id="g7I-jf-iWC"/>
+                                            <constraint firstItem="4Pq-im-IAP" firstAttribute="leading" secondItem="PiW-Ew-3Sb" secondAttribute="leading" constant="31" id="kRu-mO-lJx"/>
+                                            <constraint firstAttribute="trailing" secondItem="pQM-RS-OLD" secondAttribute="trailing" constant="35" id="mfB-1L-cBx"/>
+                                        </constraints>
                                         <connections>
                                             <outlet property="labelDescription" destination="4Pq-im-IAP" id="xBU-sk-k8M"/>
                                             <outlet property="labelSubredditTitle" destination="pQM-RS-OLD" id="Sjt-Jk-p00"/>
@@ -60,54 +71,85 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FQM-mw-r8g">
-                                <rect key="frame" x="193" y="79" width="121" height="29"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQ7-wM-Yq9">
+                                <rect key="frame" x="0.0" y="72" width="320" height="122"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Browse"/>
-                                    <segment title="Search"/>
-                                </segments>
-                                <connections>
-                                    <action selector="switchedSubredditBrowseSearch:" destination="vXZ-lx-hvc" eventType="valueChanged" id="Q5e-qw-bg8"/>
-                                </connections>
-                            </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZUK-aq-rca">
-                                <rect key="frame" x="0.0" y="128" width="320" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <segments>
-                                    <segment title="Popular"/>
-                                    <segment title="New"/>
-                                </segments>
-                                <connections>
-                                    <action selector="switchSubredditSection:" destination="vXZ-lx-hvc" eventType="valueChanged" id="lbQ-lY-I90"/>
-                                </connections>
-                            </segmentedControl>
-                            <searchBar hidden="YES" contentMode="redraw" text="" translatesAutoresizingMaskIntoConstraints="NO" id="TR0-Iw-5bF">
-                                <rect key="frame" x="0.0" y="120" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </searchBar>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FQM-mw-r8g">
+                                        <rect key="frame" x="60" y="44" width="200" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="Browse"/>
+                                            <segment title="Search"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="switchedSubredditBrowseSearch:" destination="vXZ-lx-hvc" eventType="valueChanged" id="Q5e-qw-bg8"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZUK-aq-rca">
+                                        <rect key="frame" x="12" y="87" width="297" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="Popular"/>
+                                            <segment title="New"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="switchSubredditSection:" destination="vXZ-lx-hvc" eventType="valueChanged" id="lbQ-lY-I90"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="T79-hl-dTg">
+                                        <rect key="frame" x="3" y="8" width="314" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="Posts"/>
+                                            <segment title="Subreddits"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="switchedPostsSubreddits:" destination="vXZ-lx-hvc" eventType="valueChanged" id="tWJ-Lq-BVt"/>
+                                        </connections>
+                                    </segmentedControl>
+                                    <searchBar hidden="YES" contentMode="redraw" fixedFrame="YES" barStyle="black" searchBarStyle="minimal" text="" translatesAutoresizingMaskIntoConstraints="NO" id="TR0-Iw-5bF">
+                                        <rect key="frame" x="0.0" y="78" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.80000000000000004" colorSpace="calibratedRGB"/>
+                                        <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </searchBar>
+                                </subviews>
+                                <color key="backgroundColor" red="0.078431375319999996" green="0.23921570180000001" blue="0.32549020649999999" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstItem="T79-hl-dTg" firstAttribute="top" secondItem="CQ7-wM-Yq9" secondAttribute="top" constant="8" id="0t4-cW-jI8"/>
+                                    <constraint firstItem="T79-hl-dTg" firstAttribute="leading" secondItem="CQ7-wM-Yq9" secondAttribute="leading" constant="3" id="4At-ly-KtP"/>
+                                    <constraint firstItem="ZUK-aq-rca" firstAttribute="leading" secondItem="CQ7-wM-Yq9" secondAttribute="leading" constant="12" id="C8y-hW-GJX"/>
+                                    <constraint firstAttribute="trailing" secondItem="T79-hl-dTg" secondAttribute="trailing" constant="3" id="Kns-XO-hFZ"/>
+                                    <constraint firstItem="ZUK-aq-rca" firstAttribute="top" secondItem="T79-hl-dTg" secondAttribute="bottom" constant="51" id="MNj-lG-Y9J"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZUK-aq-rca" secondAttribute="trailing" constant="11" id="Xgl-uS-P3d"/>
+                                    <constraint firstAttribute="trailing" secondItem="FQM-mw-r8g" secondAttribute="trailing" constant="60" id="Y61-sv-hxG"/>
+                                    <constraint firstItem="FQM-mw-r8g" firstAttribute="leading" secondItem="CQ7-wM-Yq9" secondAttribute="leading" constant="60" id="s19-2Q-RIj"/>
+                                    <constraint firstItem="ZUK-aq-rca" firstAttribute="top" secondItem="FQM-mw-r8g" secondAttribute="bottom" constant="15" id="u4R-2S-S22"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="TR0-Iw-5bF" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="56" id="5sR-lZ-J1U"/>
-                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="6qX-VH-0gd"/>
-                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="TR0-Iw-5bF" secondAttribute="bottom" id="Dcn-le-CC0"/>
-                            <constraint firstItem="FQM-mw-r8g" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="15" id="ESS-tn-eqk"/>
-                            <constraint firstItem="TR0-Iw-5bF" firstAttribute="top" secondItem="FQM-mw-r8g" secondAttribute="bottom" constant="13" id="J8W-MT-EnT"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Ueb-EJ-zrS" secondAttribute="bottom" constant="-6" id="M17-xY-EQU"/>
-                            <constraint firstAttribute="trailing" secondItem="FQM-mw-r8g" secondAttribute="trailing" constant="6" id="NQZ-uv-ar0"/>
-                            <constraint firstAttribute="trailing" secondItem="Ueb-EJ-zrS" secondAttribute="trailing" id="e2x-NI-Sz7"/>
-                            <constraint firstItem="TR0-Iw-5bF" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="hXI-0Y-pfX"/>
-                            <constraint firstAttribute="trailing" secondItem="TR0-Iw-5bF" secondAttribute="trailing" id="uRV-dx-GSA"/>
+                            <constraint firstItem="CQ7-wM-Yq9" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="44G-w3-GIP"/>
+                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="CQ7-wM-Yq9" secondAttribute="bottom" constant="16" id="CLB-CP-qnL"/>
+                            <constraint firstAttribute="trailing" secondItem="CQ7-wM-Yq9" secondAttribute="trailing" id="W2F-8X-4BS"/>
+                            <constraint firstItem="CQ7-wM-Yq9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="eao-Li-FzR"/>
+                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Ueb-EJ-zrS" secondAttribute="bottom" constant="-6" id="mQ7-RZ-7Hd"/>
+                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="146" id="t2D-C6-ETA"/>
+                            <constraint firstAttribute="trailing" secondItem="Ueb-EJ-zrS" secondAttribute="trailing" id="tp0-9l-oBN"/>
+                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="vIl-WU-obi"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Subreddits" id="aIi-kg-G6m"/>
+                    <navigationItem key="navigationItem" title="Reddit It" id="aIi-kg-G6m"/>
                     <connections>
                         <outlet property="collectionViewSubreddits" destination="Ueb-EJ-zrS" id="1Gz-Fm-kDY"/>
                         <outlet property="searchBarSubreddits" destination="TR0-Iw-5bF" id="PbO-6p-Kfa"/>
                         <outlet property="segmentedControlBrowseSearch" destination="FQM-mw-r8g" id="hj8-FZ-sgy"/>
+                        <outlet property="segmentedControlPostSubreddit" destination="T79-hl-dTg" id="27e-HA-qdC"/>
                         <outlet property="segmentedControlSubredditSections" destination="ZUK-aq-rca" id="17g-KL-Vlf"/>
+                        <outlet property="viewContainer" destination="CQ7-wM-Yq9" id="SLs-jg-6Sf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -207,7 +249,9 @@
                             <constraint firstAttribute="trailing" secondItem="b45-uE-4XC" secondAttribute="trailing" id="8Cg-hk-rNQ"/>
                             <constraint firstItem="b45-uE-4XC" firstAttribute="top" secondItem="7wa-ea-HkS" secondAttribute="bottom" constant="-1" id="Lv4-Xd-xS2"/>
                             <constraint firstItem="b45-uE-4XC" firstAttribute="leading" secondItem="kp9-y0-zWs" secondAttribute="leading" id="OOG-Zu-Uci"/>
+                            <constraint firstItem="1nc-WH-Lnd" firstAttribute="top" secondItem="b45-uE-4XC" secondAttribute="bottom" id="SAI-eg-KmQ"/>
                             <constraint firstItem="1nc-WH-Lnd" firstAttribute="top" secondItem="b45-uE-4XC" secondAttribute="bottom" id="WG1-cS-cei"/>
+                            <constraint firstItem="b45-uE-4XC" firstAttribute="top" secondItem="7wa-ea-HkS" secondAttribute="bottom" constant="-1" id="g1g-DO-1Ml"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="p3u-Jz-gKt"/>

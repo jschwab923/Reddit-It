@@ -12,7 +12,7 @@
 #import "JWCViewControllerPostDetails.h"
 
 @interface JWCViewControllerSubredditPosts ()
-<JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate>
+<JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic) NSArray *redditPosts;
 @property (nonatomic) JWCRedditController *redditController;
@@ -89,6 +89,8 @@
     return redditPostCell;
 }
 
+
+
 #pragma mark - JWCRedditControllerDelegate
 - (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after
 {
@@ -107,9 +109,21 @@
     [self.collectionViewPosts reloadData];
 }
 
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGSize size = CGSizeMake(CGRectGetWidth(self.collectionViewPosts.frame)-10, 80);
+    return size;
+}
+
+#pragma mark - Rotation Handling
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    NSLog(@"%@", fromInterfaceOrientation);
+    [self.collectionViewPosts setNeedsUpdateConstraints];
+}
 
 #pragma mark - Navigation
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSIndexPath *selectedIndexPath = [[self.collectionViewPosts indexPathsForSelectedItems] firstObject];
