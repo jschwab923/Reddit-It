@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B5AA7C618F4746A00A1898C /* KGModal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B5AA7C518F4746A00A1898C /* KGModal.m */; };
 		AE339E9518F2082900772111 /* JWCViewControllerOauth.m in Sources */ = {isa = PBXBuildFile; fileRef = AE339E9418F2082900772111 /* JWCViewControllerOauth.m */; };
 		AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5C8FC118F0B740001EB920 /* JWCRedditController.m */; };
 		AE7A8B1618F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7A8B1518F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m */; };
@@ -41,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6B5AA7C418F4746A00A1898C /* KGModal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGModal.h; sourceTree = "<group>"; };
+		6B5AA7C518F4746A00A1898C /* KGModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGModal.m; sourceTree = "<group>"; };
 		AE339E9318F2082900772111 /* JWCViewControllerOauth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCViewControllerOauth.h; sourceTree = "<group>"; };
 		AE339E9418F2082900772111 /* JWCViewControllerOauth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCViewControllerOauth.m; sourceTree = "<group>"; };
 		AE5C8FC018F0B740001EB920 /* JWCRedditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCRedditController.h; sourceTree = "<group>"; };
@@ -167,6 +170,8 @@
 		AEF8A48C18F07D0000173A9F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6B5AA7C418F4746A00A1898C /* KGModal.h */,
+				6B5AA7C518F4746A00A1898C /* KGModal.m */,
 				AEF8A48D18F07D0000173A9F /* Reddit It-Info.plist */,
 				AEF8A48E18F07D0000173A9F /* InfoPlist.strings */,
 				AEF8A49118F07D0000173A9F /* main.m */,
@@ -295,6 +300,7 @@
 				AEAB980218F1EA420069C9D7 /* JWCViewControllerPostDetails.m in Sources */,
 				AEF8A49218F07D0000173A9F /* main.m in Sources */,
 				AEF8A49618F07D0000173A9F /* JWCAppDelegate.m in Sources */,
+				6B5AA7C618F4746A00A1898C /* KGModal.m in Sources */,
 				AEF8A4C218F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m in Sources */,
 				AEF8A49F18F07D0000173A9F /* JWCViewController.m in Sources */,
 				AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */,
