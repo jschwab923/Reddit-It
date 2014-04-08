@@ -19,6 +19,8 @@
 #define SUBREDDIT_AFTER_URL @"http://www.reddit.com/subreddits/%@.json?after=%@"
 #define SUBREDDIT_AFTER_COUNT_URL @"http://www.reddit.com/subreddits/%@.json?after=%@&count=%i"
 
+#define MAIN_SECTIONS_URL @"http://www.reddit.com/%@.json"
+
 #define SUBREDDIT_SEARCH_URL @"http://www.reddit.com/subreddits/search.json?q=%@"
 
 #define SUBREDDIT_POSTS_URL @"http://www.reddit.com/%@.json"
@@ -70,6 +72,15 @@
     [dataTask resume];
 }
 
+- (void)getListOfPostsWithSection:(NSString *)section
+{
+    NSString *urlString = [NSString stringWithFormat:MAIN_SECTIONS_URL, section];
+    urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL *postURL = [NSURL URLWithString:urlString];
+    
+    [self queryRedditWithURL:postURL];
+}
+
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count
 {
     NSString *subbredditURL;
@@ -113,8 +124,17 @@
 
     NSDictionary *data = [JSON objectForKey:@"data"];
     
-    NSURL *thumbnailURL = [NSURL URLWithString:[data objectForKey:@"thumbnail"]];
-    NSString *ID = [data objectForKey:@"id"];
+    NSURL *thumbnailURL;
+    if ([data objectForKey:@"thumbnail"]) {
+        thumbnailURL = [NSURL URLWithString:[data objectForKey:@"thumbnail"]];
+    } else {
+        thumbnailURL = [NSURL URLWithString:@"nothumbnail"];
+    }
+    
+    NSString *ID;
+    if ([data objectForKey:@"id"]) {
+        ID = [data objectForKey:@"id"];
+    }
     
     [thumbnailIDandURL setObject:thumbnailURL forKey:ID];
 

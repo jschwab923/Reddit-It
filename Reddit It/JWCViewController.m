@@ -10,6 +10,8 @@
 #import "JWCRedditController.h"
 #import "JWCCollectionViewCellSubreddit.h"
 #import "JWCViewControllerSubredditPosts.h"
+#import "JWCCollectionVIewCellRedditPost.h"
+#import "JWCViewControllerPostDetails.h"
 
 @interface JWCViewController ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, UISearchBarDelegate>
@@ -28,15 +30,24 @@
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBarSubreddits;
 
 @property (strong, nonatomic) JWCRedditController *redditController;
+
 @property (strong, nonatomic) NSMutableArray *popularSubreddits;
 @property (strong, nonatomic) NSMutableArray *theNewSubreddits;
 @property (strong, nonatomic) NSMutableArray *searchedSubreddits;
+
+@property (strong, nonatomic) NSMutableArray *hotPosts;
+@property (strong, nonatomic) NSMutableArray *theNewPosts;
+@property (strong, nonatomic) NSMutableArray *risingPosts;
+@property (strong, nonatomic) NSMutableArray *controversialPosts;
+@property (strong, nonatomic) NSMutableArray *topPosts;
 
 @property (weak, nonatomic) NSMutableArray *selectedArray;
 
 @property (strong, nonatomic) NSString *subredditAfter;
 @property (nonatomic) NSInteger subredditCount;
 @property (strong, nonatomic) NSString *subredditType;
+
+@property (strong, nonatomic) NSMutableDictionary *postThumbnails;
 
 @end
 
@@ -46,6 +57,14 @@
 {
     [super viewDidLoad];
     
+    [self.segmentedControlSubredditSections removeAllSegments];
+    [self.segmentedControlSubredditSections insertSegmentWithTitle:@"hot" atIndex:0 animated:YES];
+    [self.segmentedControlSubredditSections insertSegmentWithTitle:@"new" atIndex:1 animated:YES];
+    [self.segmentedControlSubredditSections insertSegmentWithTitle:@"rising" atIndex:2 animated:YES];
+    [self.segmentedControlSubredditSections insertSegmentWithTitle:@"controversial" atIndex:3 animated:YES];
+    [self.segmentedControlSubredditSections insertSegmentWithTitle:@"top" atIndex:4 animated:YES];
+    [self.segmentedControlSubredditSections setSelectedSegmentIndex:0];
+    [self.segmentedControlBrowseSearch setEnabled:NO forSegmentAtIndex:1];
     for (UIView *subView in self.searchBarSubreddits.subviews) {
         if([subView isKindOfClass: [UITextField class]])
             [(UITextField *)subView setKeyboardAppearance: UIKeyboardAppearanceAlert];
@@ -72,8 +91,16 @@
     self.theNewSubreddits = [NSMutableArray new];
     self.searchedSubreddits = [NSMutableArray new];
     
+    self.hotPosts = [NSMutableArray new];
+    self.theNewPosts = [NSMutableArray new];
+    self.risingPosts = [NSMutableArray new];
+    self.controversialPosts = [NSMutableArray new];
+    self.topPosts = [NSMutableArray new];
+    
+    self.postThumbnails = [NSMutableDictionary new];
+    
     self.selectedArray = self.popularSubreddits;
-    [self.redditController getListOfSubredditsWithType:@"" after:nil count:0];
+    [self.redditController getListOfPostsWithSection:@"hot"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,6 +119,16 @@
     [self.collectionViewSubreddits reloadData];
 }
 
+- (void)finishedDownloadingImageWithData:(NSData *)imageData andID:(NSString *)ID
+{
+    UIImage *postThumbnail = [UIImage imageWithData:imageData];
+    [self.postThumbnails setObject:postThumbnail forKey:ID];
+    
+    NSLog(@"Image Downloaded");
+    
+    [self.collectionViewSubreddits reloadData];
+}
+
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -106,22 +143,65 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    JWCCollectionViewCellSubreddit *subredditCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SubredditCell" forIndexPath:indexPath];
+    UICollectionViewCell *currentCell;
 
-    [self populateCellWithArray:self.selectedArray cell:subredditCell andRow:indexPath.row];
-    return subredditCell;
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
+        case 0:
+        {
+            currentCell = (JWCCollectionViewCellRedditPost *)[collectionView dequeueReusableCellWithReuseIdentifier:@"PostCell" forIndexPath:indexPath];
+            [self populateCellWithPostsArray:self.selectedArray cell:currentCell andRow:indexPath.row];
+            break;
+        }
+        case 1:
+            currentCell = (JWCCollectionViewCellSubreddit *)[collectionView dequeueReusableCellWithReuseIdentifier:@"SubredditCell" forIndexPath:indexPath];
+            [self populateCellWithSubredditArray:self.selectedArray cell:currentCell andRow:indexPath.row];
+            break;
+        default:
+            break;
+    }
+    return currentCell;
 }
 
-- (void)populateCellWithArray:(NSArray *)currentSubredditArray cell:(JWCCollectionViewCellSubreddit *)subredditCell andRow:(NSInteger)row
+- (void)populateCellWithPostsArray:(NSArray *)currentPostsArray cell:(UICollectionViewCell *)postCell andRow:(NSInteger)row
 {
+    JWCCollectionViewCellRedditPost *tempCell = (JWCCollectionViewCellRedditPost *)postCell;
+    if ([currentPostsArray count] > 0) {
+        NSDictionary *currentPost = currentPostsArray[row];
+        NSDictionary *postData = [currentPost objectForKey:@"data"];
+        
+        NSString *postID;
+        if ([postData objectForKey:@"id"]) {
+            postID = [postData objectForKey:@"id"];
+        } else {
+            postID = @"noid";
+        }
+        
+        tempCell.labelPostText.text = [postData objectForKey:@"title"];
+        tempCell.imageViewThumbnail.image = nil;
+        if (![[postData objectForKey:@"thumbnail"] isEqualToString:@""]) {
+            tempCell.imageViewThumbnail.hidden = NO;
+            if (![self.postThumbnails objectForKey:postID]) {
+                [self.redditController downloadThumbnailImage:currentPost];
+            } else {
+                tempCell.imageViewThumbnail.image = [self.postThumbnails objectForKey:postID];
+            }
+        } else {
+            tempCell.imageViewThumbnail.hidden = YES;
+        }
+    }
+}
+
+- (void)populateCellWithSubredditArray:(NSArray *)currentSubredditArray cell:(UICollectionViewCell *)subredditCell andRow:(NSInteger)row
+{
+    JWCCollectionViewCellSubreddit *tempCell = (JWCCollectionViewCellSubreddit *)subredditCell;
     if ([currentSubredditArray count] > 0) {
         NSDictionary *currentSubreddit = currentSubredditArray[row];
         NSDictionary *subredditInfo = [currentSubreddit objectForKey:@"data"];
         
-        subredditCell.labelSubredditTitle.text = [subredditInfo objectForKey:@"display_name"];
-        subredditCell.labelDescription.text = [subredditInfo objectForKey:@"public_description"];
+        tempCell.labelSubredditTitle.text = [subredditInfo objectForKey:@"display_name"];
+        tempCell.labelDescription.text = [subredditInfo objectForKey:@"public_description"];
     } else {
-        subredditCell.labelSubredditTitle.text = @"Subreddit Title";
+        tempCell.labelSubredditTitle.text = @"Subreddit Title";
     }
 }
 
@@ -189,6 +269,12 @@
 {
     switch (postOrSubreddit.selectedSegmentIndex) {
         case 0:
+            [self.segmentedControlBrowseSearch setSelectedSegmentIndex:0];
+            [self.segmentedControlBrowseSearch setEnabled:NO forSegmentAtIndex:1];
+            self.segmentedControlSubredditSections.hidden = NO;
+            self.searchBarSubreddits.hidden = YES;
+            [self.collectionViewSubreddits reloadData];
+            
             [self.segmentedControlSubredditSections removeAllSegments];
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"hot" atIndex:0 animated:YES];
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"new" atIndex:1 animated:YES];
@@ -197,6 +283,7 @@
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"top" atIndex:4 animated:YES];
             break;
         case 1:
+            [self.segmentedControlBrowseSearch setEnabled:YES forSegmentAtIndex:1];
             [self.segmentedControlSubredditSections removeAllSegments];
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"popular" atIndex:0 animated:YES];
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"new" atIndex:1 animated:YES];
@@ -208,17 +295,25 @@
 
 - (IBAction)switchedSubredditBrowseSearch:(UISegmentedControl *)browseType
 {
-    switch (browseType.selectedSegmentIndex) {
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
         case 0:
-            self.selectedArray = self.popularSubreddits;
-            self.segmentedControlSubredditSections.hidden = NO;
-            self.searchBarSubreddits.hidden = YES;
-            [self.collectionViewSubreddits reloadData];
             break;
         case 1:
-            self.selectedArray = self.searchedSubreddits;
-            self.segmentedControlSubredditSections.hidden = YES;
-            self.searchBarSubreddits.hidden = NO;
+            switch (browseType.selectedSegmentIndex) {
+                case 0:
+                    self.selectedArray = self.popularSubreddits;
+                    self.segmentedControlSubredditSections.hidden = NO;
+                    self.searchBarSubreddits.hidden = YES;
+                    [self.collectionViewSubreddits reloadData];
+                    break;
+                case 1:
+                    self.selectedArray = self.searchedSubreddits;
+                    self.segmentedControlSubredditSections.hidden = YES;
+                    self.searchBarSubreddits.hidden = NO;
+                    break;
+                default:
+                    break;
+            }
             break;
         default:
             break;
@@ -227,24 +322,73 @@
 
 - (IBAction)switchSubredditSection:(UISegmentedControl *)subredditSection
 {
-    switch (subredditSection.selectedSegmentIndex) {
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
         case 0:
-            self.subredditType = @"popular";
-            self.selectedArray = self.popularSubreddits;
-            if ([self.popularSubreddits count] == 0) {
-                [self.redditController getListOfSubredditsWithType:self.subredditType after:nil count:0];
+            [self.postThumbnails removeAllObjects];
+            switch (subredditSection.selectedSegmentIndex) {
+                case 0:
+                    self.selectedArray = self.hotPosts;
+                    self.subredditType = @"hot";
+                    if ([self.selectedArray count] == 0) {
+                        [self.redditController getListOfPostsWithSection:self.subredditType];
+                    }
+                    break;
+                case 1:
+                    self.selectedArray = self.theNewPosts;
+                    self.subredditType = @"new";
+                    if ([self.selectedArray count] == 0) {
+                        [self.redditController getListOfPostsWithSection:self.subredditType];
+                    }
+                    break;
+                case 2:
+                    self.selectedArray = self.risingPosts;
+                    self.subredditType = @"rising";
+                    if ([self.selectedArray count] == 0) {
+                        [self.redditController getListOfPostsWithSection:self.subredditType];
+                    }
+                    break;
+                case 3:
+                    self.selectedArray = self.controversialPosts;
+                    self.subredditType = @"controversial";
+                    if ([self.selectedArray count] == 0) {
+                        [self.redditController getListOfPostsWithSection:self.subredditType];
+                    }
+                    break;
+                case 4:
+                    self.selectedArray = self.topPosts;
+                    self.subredditType = @"top";
+                    if ([self.selectedArray count] == 0) {
+                        [self.redditController getListOfPostsWithSection:self.subredditType];
+                    }
+                    break;
+                default:
+                    break;
             }
             break;
         case 1:
-            self.subredditType = @"new";
-            self.selectedArray = self.theNewSubreddits;
-            if ([self.theNewSubreddits count] == 0) {
-                [self.redditController getListOfSubredditsWithType:self.subredditType after:nil count:0];
+            switch (subredditSection.selectedSegmentIndex) {
+                case 0:
+                    self.subredditType = @"popular";
+                    self.selectedArray = self.popularSubreddits;
+                    if ([self.popularSubreddits count] == 0) {
+                        [self.redditController getListOfSubredditsWithType:self.subredditType after:nil count:0];
+                    }
+                    break;
+                case 1:
+                    self.subredditType = @"new";
+                    self.selectedArray = self.theNewSubreddits;
+                    if ([self.theNewSubreddits count] == 0) {
+                        [self.redditController getListOfSubredditsWithType:self.subredditType after:nil count:0];
+                    }
+                    break;
+                default:
+                    break;
             }
             break;
         default:
             break;
     }
+    
     [self.collectionViewSubreddits reloadData];
 }
 
@@ -259,14 +403,35 @@
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;
-    
-    NSArray *selectedIndexPaths = [self.collectionViewSubreddits indexPathsForSelectedItems];
-    NSIndexPath *selectedIndexPath = selectedIndexPaths[0];
-
-    NSDictionary *selectedSubreddit = self.selectedArray[selectedIndexPath.row];
-    NSDictionary *selectedSubredditInfo = [selectedSubreddit objectForKey:@"data"];
-    [destinationViewController setSubredditInfo:selectedSubredditInfo];
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
+        case 0:
+        {
+            JWCViewControllerPostDetails *destinationViewController = (JWCViewControllerPostDetails *)segue.destinationViewController;
+            
+            NSArray *selectedIndexPaths = [self.collectionViewSubreddits indexPathsForSelectedItems];
+            NSIndexPath *selectedIndexPath = [selectedIndexPaths firstObject];
+            
+            NSDictionary *selectedPost = self.selectedArray[selectedIndexPath.row];
+            NSDictionary *postData = [selectedPost objectForKey:@"data"];
+            NSURL *postURL = [NSURL URLWithString:[postData objectForKey:@"url"]];
+            [destinationViewController setPostURL:postURL];
+            break;
+        }
+        case 1:
+        {
+            JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;
+            
+            NSArray *selectedIndexPaths = [self.collectionViewSubreddits indexPathsForSelectedItems];
+            NSIndexPath *selectedIndexPath = [selectedIndexPaths firstObject];
+            
+            NSDictionary *selectedSubreddit = self.selectedArray[selectedIndexPath.row];
+            NSDictionary *selectedSubredditInfo = [selectedSubreddit objectForKey:@"data"];
+            [destinationViewController setSubredditInfo:selectedSubredditInfo];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 #pragma mark - Oauth Methods

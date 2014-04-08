@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Ueb-EJ-zrS">
-                                <rect key="frame" x="0.0" y="210" width="320" height="364"/>
+                                <rect key="frame" x="0.0" y="191" width="320" height="383"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="bWd-pg-FjN">
@@ -69,10 +69,37 @@
                                             <segue destination="SuM-up-aZ4" kind="push" id="wkF-tP-LdM"/>
                                         </connections>
                                     </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PostCell" id="ZbD-qX-Ncr" customClass="JWCCollectionViewCellRedditPost">
+                                        <rect key="frame" x="3" y="80" width="315" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="315" height="80"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Subreddit Post" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="Ftu-dW-kmy">
+                                                    <rect key="frame" x="83" y="0.0" width="237" height="80"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fxR-Vk-OJh">
+                                                    <rect key="frame" x="15" y="10" width="60" height="60"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <connections>
+                                            <outlet property="imageViewThumbnail" destination="fxR-Vk-OJh" id="kpw-5U-rTe"/>
+                                            <outlet property="labelPostText" destination="Ftu-dW-kmy" id="1lo-bB-TgR"/>
+                                            <segue destination="SlY-uc-DIP" kind="push" id="Z2D-c2-PbY"/>
+                                        </connections>
+                                    </collectionViewCell>
                                 </cells>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CQ7-wM-Yq9">
-                                <rect key="frame" x="0.0" y="72" width="320" height="122"/>
+                                <rect key="frame" x="0.0" y="61" width="320" height="122"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FQM-mw-r8g">
@@ -132,12 +159,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="CQ7-wM-Yq9" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="8" id="44G-w3-GIP"/>
-                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="CQ7-wM-Yq9" secondAttribute="bottom" constant="16" id="CLB-CP-qnL"/>
+                            <constraint firstItem="CQ7-wM-Yq9" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="-3" id="44G-w3-GIP"/>
+                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="CQ7-wM-Yq9" secondAttribute="bottom" constant="8" id="CLB-CP-qnL"/>
                             <constraint firstAttribute="trailing" secondItem="CQ7-wM-Yq9" secondAttribute="trailing" id="W2F-8X-4BS"/>
                             <constraint firstItem="CQ7-wM-Yq9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="eao-Li-FzR"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="Ueb-EJ-zrS" secondAttribute="bottom" constant="-6" id="mQ7-RZ-7Hd"/>
-                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="146" id="t2D-C6-ETA"/>
+                            <constraint firstItem="Ueb-EJ-zrS" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="127" id="t2D-C6-ETA"/>
                             <constraint firstAttribute="trailing" secondItem="Ueb-EJ-zrS" secondAttribute="trailing" id="tp0-9l-oBN"/>
                             <constraint firstItem="Ueb-EJ-zrS" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="vIl-WU-obi"/>
                         </constraints>
@@ -189,7 +216,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5sq-bI-Uws" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1638" y="89"/>
+            <point key="canvasLocation" x="1669" y="-125"/>
         </scene>
         <!--View Controller Subreddit Posts-->
         <scene sceneID="3fI-nI-qzD">
@@ -261,7 +288,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hpy-Aj-Zoa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1207" y="89"/>
+            <point key="canvasLocation" x="1235" y="354"/>
         </scene>
         <!--View Controller Oauth-->
         <scene sceneID="VfE-1Y-iE8">
@@ -315,4 +342,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="BXM-US-aSv"/>
+    </inferredMetricsTieBreakers>
 </document>
