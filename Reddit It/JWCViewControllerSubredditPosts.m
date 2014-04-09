@@ -39,6 +39,7 @@
     self.postThumbnails = [NSMutableDictionary new];
     
     [self.redditController getListOfPostsFromSubreddit:[self.subredditInfo objectForKey:@"url"]];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,7 +120,6 @@
 #pragma mark - Rotation Handling
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    NSLog(@"%@", fromInterfaceOrientation);
     [self.collectionViewPosts setNeedsUpdateConstraints];
 }
 

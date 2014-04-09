@@ -29,12 +29,22 @@
     NSURLRequest *postRequest = [NSURLRequest requestWithURL:self.postURL];
     self.webViewPost.scalesPageToFit = YES;
     [self.webViewPost loadRequest:postRequest];
+    
+    UISwipeGestureRecognizer *backSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self
+                                                                                    action:@selector(backSwipe:)];
+    [backSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
+    [self.webViewPost addGestureRecognizer:backSwipe];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)backSwipe:(UISwipeGestureRecognizer *)backSwipe
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

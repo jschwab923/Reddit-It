@@ -12,12 +12,16 @@
 #import "JWCViewControllerSubredditPosts.h"
 #import "JWCCollectionVIewCellRedditPost.h"
 #import "JWCViewControllerPostDetails.h"
+#import "KGModal.h"
 
 @interface JWCViewController ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, UISearchBarDelegate>
 {
     CGRect _originalCollectionViewFrame;
     CGRect _originalContainerViewFrame;
+    NSIndexPath *_selectedIndexPath;
+    
+    BOOL _seguePerformed;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *viewContainer;
@@ -101,6 +105,11 @@
     
     self.selectedArray = self.popularSubreddits;
     [self.redditController getListOfPostsWithSection:@"hot"];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    _seguePerformed = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -203,6 +212,29 @@
     } else {
         tempCell.labelSubredditTitle.text = @"Subreddit Title";
     }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    KGModal *postDetailSelection = [KGModal sharedInstance];
+    
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 100)];
+    UIButton *viewLink = [[UIButton alloc] initWithFrame:CGRectMake(30, 0, 90, 60)];
+    [viewLink setTitle:@"Link" forState:UIControlStateNormal];
+    [viewLink addTarget:self action:@selector(pressedViewLink:)
+       forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *viewComments = [[UIButton alloc] initWithFrame:CGRectMake(30, 45, 90, 60)];
+    [viewComments setTitle:@"Comments" forState:UIControlStateNormal];
+    [viewLink addTarget:self action:@selector(pressedViewComments:)
+       forControlEvents:UIControlEventTouchUpInside];
+    
+    [contentView addSubview:viewLink];
+    [contentView addSubview:viewComments];
+    
+    _selectedIndexPath = indexPath;
+    
+    [postDetailSelection showWithContentView:contentView];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -406,32 +438,42 @@
     switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
         case 0:
         {
-            JWCViewControllerPostDetails *destinationViewController = (JWCViewControllerPostDetails *)segue.destinationViewController;
+            if (!_seguePerformed) {
+                _seguePerformed = YES;
+                JWCViewControllerPostDetails *destinationViewController = (JWCViewControllerPostDetails *)segue.destinationViewController;
             
-            NSArray *selectedIndexPaths = [self.collectionViewSubreddits indexPathsForSelectedItems];
-            NSIndexPath *selectedIndexPath = [selectedIndexPaths firstObject];
-            
-            NSDictionary *selectedPost = self.selectedArray[selectedIndexPath.row];
-            NSDictionary *postData = [selectedPost objectForKey:@"data"];
-            NSURL *postURL = [NSURL URLWithString:[postData objectForKey:@"url"]];
-            [destinationViewController setPostURL:postURL];
+                NSDictionary *selectedPost = self.selectedArray[_selectedIndexPath.row];
+                NSDictionary *postData = [selectedPost objectForKey:@"data"];
+                NSURL *postURL = [NSURL URLWithString:[postData objectForKey:@"url"]];
+                [destinationViewController setPostURL:postURL];
+            }
             break;
         }
         case 1:
         {
-            JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;
-            
-            NSArray *selectedIndexPaths = [self.collectionViewSubreddits indexPathsForSelectedItems];
-            NSIndexPath *selectedIndexPath = [selectedIndexPaths firstObject];
-            
-            NSDictionary *selectedSubreddit = self.selectedArray[selectedIndexPath.row];
-            NSDictionary *selectedSubredditInfo = [selectedSubreddit objectForKey:@"data"];
-            [destinationViewController setSubredditInfo:selectedSubredditInfo];
+            if (!_seguePerformed) {
+                _seguePerformed = YES;
+                JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;
+                
+                NSDictionary *selectedSubreddit = self.selectedArray[_selectedIndexPath.row];
+                NSDictionary *selectedSubredditInfo = [selectedSubreddit objectForKey:@"data"];
+                [destinationViewController setSubredditInfo:selectedSubredditInfo];
+            }
             break;
         }
         default:
             break;
     }
+}
+
+- (void)pressedViewLink:(UIButton *)viewLink
+{
+    [self performSegueWithIdentifier:@"LinkSegue" sender:self];
+}
+
+- (void)pressedViewComments:(UIButton *)viewComments
+{
+    [self performSegueWithIdentifier:@"CommentsSegue" sender:self];
 }
 
 #pragma mark - Oauth Methods
