@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JWCRedditPost.h"
+#import "JWCSubreddit.h"
 
 @protocol JWCRedditControllerDelegate <NSObject>
 
@@ -32,6 +34,7 @@
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count;
 - (void)searchSubredditsWithQuery:(NSString *)query;
 - (void)getListOfPostsFromSubreddit:(NSString *)subreddit;
-- (void)downloadThumbnailImage:(NSDictionary *)JSON;
+- (void)downloadThumbnailImage:(NSURL *)thumbnailURL andID:(NSNumber *)postID;
 
+- (NSMutableArray *)parseJSON:(NSArray *)JSON withType:(NSString *)JSONType;
 @end

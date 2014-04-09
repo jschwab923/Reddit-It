@@ -13,6 +13,8 @@
 #import "JWCCollectionVIewCellRedditPost.h"
 #import "JWCViewControllerPostDetails.h"
 #import "KGModal.h"
+#import "JWCRedditPost.h"
+#import "JWCSubreddit.h"
 
 @interface JWCViewController ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, UISearchBarDelegate>
@@ -103,7 +105,7 @@
     
     self.postThumbnails = [NSMutableDictionary new];
     
-    self.selectedArray = self.popularSubreddits;
+    self.selectedArray = self.hotPosts;
     [self.redditController getListOfPostsWithSection:@"hot"];
 }
 
@@ -119,12 +121,20 @@
 }
 
 #pragma mark - JWCRedditControllerDelegate
-- (void)finishedLoadingJSON:(NSArray *)subreddits withAfter:(NSString *)after
+- (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after
 {
-    [self.selectedArray addObjectsFromArray:subreddits];
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
+        case 0:
+            [self.selectedArray addObjectsFromArray:[self.redditController parseJSON:JSON withType:@"post"]];
+            break;
+        case 1:
+            [self.selectedArray addObjectsFromArray:[self.redditController parseJSON:JSON withType:@"subreddit"]];
+            break;
+        default:
+            break;
+    }
     self.subredditAfter = after;
-    self.subredditCount = [subreddits count];
-    
+    self.subredditCount = [self.selectedArray count];
     [self.collectionViewSubreddits reloadData];
 }
 
@@ -137,6 +147,8 @@
     
     [self.collectionViewSubreddits reloadData];
 }
+
+
 
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -175,24 +187,15 @@
 {
     JWCCollectionViewCellRedditPost *tempCell = (JWCCollectionViewCellRedditPost *)postCell;
     if ([currentPostsArray count] > 0) {
-        NSDictionary *currentPost = currentPostsArray[row];
-        NSDictionary *postData = [currentPost objectForKey:@"data"];
         
-        NSString *postID;
-        if ([postData objectForKey:@"id"]) {
-            postID = [postData objectForKey:@"id"];
-        } else {
-            postID = @"noid";
-        }
-        
-        tempCell.labelPostText.text = [postData objectForKey:@"title"];
+        JWCRedditPost *currentPost = [currentPostsArray objectAtIndex:row];
+        tempCell.labelPostText.text = currentPost.title;
         tempCell.imageViewThumbnail.image = nil;
-        if (![[postData objectForKey:@"thumbnail"] isEqualToString:@""]) {
-            tempCell.imageViewThumbnail.hidden = NO;
-            if (![self.postThumbnails objectForKey:postID]) {
-                [self.redditController downloadThumbnailImage:currentPost];
+        if (currentPost.thumbnailURL) {
+            if (![self.postThumbnails objectForKey:currentPost.postID]) {
+                [self.redditController downloadThumbnailImage:currentPost.thumbnailURL andID:currentPost.postID];
             } else {
-                tempCell.imageViewThumbnail.image = [self.postThumbnails objectForKey:postID];
+                tempCell.imageViewThumbnail.image = [self.postThumbnails objectForKey:currentPost.postID];
             }
         } else {
             tempCell.imageViewThumbnail.hidden = YES;
@@ -204,11 +207,9 @@
 {
     JWCCollectionViewCellSubreddit *tempCell = (JWCCollectionViewCellSubreddit *)subredditCell;
     if ([currentSubredditArray count] > 0) {
-        NSDictionary *currentSubreddit = currentSubredditArray[row];
-        NSDictionary *subredditInfo = [currentSubreddit objectForKey:@"data"];
-        
-        tempCell.labelSubredditTitle.text = [subredditInfo objectForKey:@"display_name"];
-        tempCell.labelDescription.text = [subredditInfo objectForKey:@"public_description"];
+        JWCSubreddit *currentSubreddit = [currentSubredditArray objectAtIndex:row];
+        tempCell.labelSubredditTitle.text = currentSubreddit.title;
+        tempCell.labelDescription.text = currentSubreddit.publicDescription;
     } else {
         tempCell.labelSubredditTitle.text = @"Subreddit Title";
     }
@@ -216,25 +217,27 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    KGModal *postDetailSelection = [KGModal sharedInstance];
-    
-    UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 100)];
-    UIButton *viewLink = [[UIButton alloc] initWithFrame:CGRectMake(30, 0, 90, 60)];
-    [viewLink setTitle:@"Link" forState:UIControlStateNormal];
-    [viewLink addTarget:self action:@selector(pressedViewLink:)
-       forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *viewComments = [[UIButton alloc] initWithFrame:CGRectMake(30, 45, 90, 60)];
-    [viewComments setTitle:@"Comments" forState:UIControlStateNormal];
-    [viewLink addTarget:self action:@selector(pressedViewComments:)
-       forControlEvents:UIControlEventTouchUpInside];
-    
-    [contentView addSubview:viewLink];
-    [contentView addSubview:viewComments];
-    
-    _selectedIndexPath = indexPath;
-    
-    [postDetailSelection showWithContentView:contentView];
+    if (self.segmentedControlPostSubreddit.selectedSegmentIndex == 0) {
+        _selectedIndexPath = indexPath;
+
+        KGModal *postDetailSelection = [KGModal sharedInstance];
+        
+        UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 100)];
+        UIButton *viewLink = [[UIButton alloc] initWithFrame:CGRectMake(30, 0, 90, 30)];
+        [viewLink setTitle:@"Link" forState:UIControlStateNormal];
+        [viewLink addTarget:self action:@selector(pressedViewLink:)
+           forControlEvents:UIControlEventTouchUpInside];
+        
+        UIButton *viewComments = [[UIButton alloc] initWithFrame:CGRectMake(30, 45, 90, 30)];
+        [viewComments setTitle:@"Comments" forState:UIControlStateNormal];
+        [viewComments addTarget:self action:@selector(pressedViewComments:)
+           forControlEvents:UIControlEventTouchUpInside];
+        
+        [contentView addSubview:viewLink];
+        [contentView addSubview:viewComments];
+        
+        [postDetailSelection showWithContentView:contentView];
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -301,6 +304,7 @@
 {
     switch (postOrSubreddit.selectedSegmentIndex) {
         case 0:
+            self.selectedArray = self.hotPosts;
             [self.segmentedControlBrowseSearch setSelectedSegmentIndex:0];
             [self.segmentedControlBrowseSearch setEnabled:NO forSegmentAtIndex:1];
             self.segmentedControlSubredditSections.hidden = NO;
@@ -315,6 +319,7 @@
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"top" atIndex:4 animated:YES];
             break;
         case 1:
+            self.selectedArray = self.popularSubreddits;
             [self.segmentedControlBrowseSearch setEnabled:YES forSegmentAtIndex:1];
             [self.segmentedControlSubredditSections removeAllSegments];
             [self.segmentedControlSubredditSections insertSegmentWithTitle:@"popular" atIndex:0 animated:YES];
@@ -442,9 +447,8 @@
                 _seguePerformed = YES;
                 JWCViewControllerPostDetails *destinationViewController = (JWCViewControllerPostDetails *)segue.destinationViewController;
             
-                NSDictionary *selectedPost = self.selectedArray[_selectedIndexPath.row];
-                NSDictionary *postData = [selectedPost objectForKey:@"data"];
-                NSURL *postURL = [NSURL URLWithString:[postData objectForKey:@"url"]];
+                JWCRedditPost *selectedPost = [self.selectedArray objectAtIndex:_selectedIndexPath.row];
+                NSURL *postURL = [NSURL URLWithString:selectedPost.url];
                 [destinationViewController setPostURL:postURL];
             }
             break;
@@ -452,12 +456,13 @@
         case 1:
         {
             if (!_seguePerformed) {
+                [[KGModal sharedInstance] hideAnimated:YES];
                 _seguePerformed = YES;
                 JWCViewControllerSubredditPosts *destinationViewController = (JWCViewControllerSubredditPosts *)segue.destinationViewController;
                 
-                NSDictionary *selectedSubreddit = self.selectedArray[_selectedIndexPath.row];
-                NSDictionary *selectedSubredditInfo = [selectedSubreddit objectForKey:@"data"];
-                [destinationViewController setSubredditInfo:selectedSubredditInfo];
+                NSIndexPath *selectedIndexPath = [[self.collectionViewSubreddits indexPathsForSelectedItems] firstObject];
+                JWCSubreddit *selectedSubreddit = [self.selectedArray objectAtIndex:selectedIndexPath.row];
+                [destinationViewController setSubreddit:selectedSubreddit];
             }
             break;
         }
@@ -468,11 +473,13 @@
 
 - (void)pressedViewLink:(UIButton *)viewLink
 {
+    [[KGModal sharedInstance] hideAnimated:YES];
     [self performSegueWithIdentifier:@"LinkSegue" sender:self];
 }
 
 - (void)pressedViewComments:(UIButton *)viewComments
 {
+    [[KGModal sharedInstance] hideAnimated:YES];
     [self performSegueWithIdentifier:@"CommentsSegue" sender:self];
 }
 

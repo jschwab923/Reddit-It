@@ -30,7 +30,7 @@
 - (NSURL *)oauthURL
 {
     self.state = @"stringthingstringping";
-
+    
     NSString *oauth = [NSString stringWithFormat:REDDIT_OAUTH, self.state, REDDIT_CLIENT_ID, REDDIT_REDIRECT_URI];
     oauth = [oauth stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *oauthURL = [NSURL URLWithString:oauth];
@@ -44,17 +44,17 @@
     
     NSMutableURLRequest *accessTokenRequest = [NSMutableURLRequest requestWithURL:accessTokenUrl];
     [accessTokenRequest setHTTPMethod:@"POST"];
-//    [accessTokenRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//    [accessTokenRequest setValue:self.state forHTTPHeaderField:@"state"];
-//    [accessTokenRequest setValue:@"identity" forHTTPHeaderField:@"scope"];
-//    [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"client_id"];
-//    [accessTokenRequest setValue:REDDIT_REDIRECT_URI forHTTPHeaderField:@"redirect_uri"];
-//    [accessTokenRequest setValue:self.oauthCode forHTTPHeaderField:@"code"];
-//    [accessTokenRequest setValue:@"authorization_code" forHTTPHeaderField:@"grant_type"];
+    //    [accessTokenRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    //    [accessTokenRequest setValue:self.state forHTTPHeaderField:@"state"];
+    //    [accessTokenRequest setValue:@"identity" forHTTPHeaderField:@"scope"];
+    //    [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"client_id"];
+    //    [accessTokenRequest setValue:REDDIT_REDIRECT_URI forHTTPHeaderField:@"redirect_uri"];
+    //    [accessTokenRequest setValue:self.oauthCode forHTTPHeaderField:@"code"];
+    //    [accessTokenRequest setValue:@"authorization_code" forHTTPHeaderField:@"grant_type"];
     
     [accessTokenRequest setValue:REDDIT_CLIENT_ID forHTTPHeaderField:@"client_id"];
     [accessTokenRequest setValue:REDDIT_SECRET forHTTPHeaderField:@"client_secret"];
-
+    
     NSString *postDataString = [NSString stringWithFormat:@"grant_type=authorization_code&code=%@&redirect_uri=%@", self.oauthCode, REDDIT_REDIRECT_URI];
     NSData *postData = [NSData dataWithBytes:[postDataString UTF8String]
                                       length:[postDataString length]];
@@ -118,26 +118,14 @@
 }
 
 // Takes a dictionary that either contains and array of post dictionarys, or just one post dictionary.
-- (void)downloadThumbnailImage:(NSDictionary *)JSON
+- (void)downloadThumbnailImage:(NSURL *)imageURL andID:(NSNumber *)postID
 {
     NSMutableDictionary *thumbnailIDandURL = [NSMutableDictionary new];
-
-    NSDictionary *data = [JSON objectForKey:@"data"];
     
-    NSURL *thumbnailURL;
-    if ([data objectForKey:@"thumbnail"]) {
-        thumbnailURL = [NSURL URLWithString:[data objectForKey:@"thumbnail"]];
-    } else {
-        thumbnailURL = [NSURL URLWithString:@"nothumbnail"];
-    }
+    NSURL *thumbnailURL = imageURL;
     
-    NSString *ID;
-    if ([data objectForKey:@"id"]) {
-        ID = [data objectForKey:@"id"];
-    }
+    [thumbnailIDandURL setObject:thumbnailURL forKey:postID];
     
-    [thumbnailIDandURL setObject:thumbnailURL forKey:ID];
-
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
     
@@ -151,12 +139,11 @@
         }
     }];
     [downloadTask resume];
-   
+    
 }
 
 - (void)queryRedditWithURL:(NSURL *)url
 {
-
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
     
@@ -178,6 +165,49 @@
         }
     }];
     [dataTask resume];
+}
+
+- (NSMutableArray *)parseJSON:(NSArray *)JSON withType:(NSString *)JSONType
+{
+    NSMutableArray *parsedJSONArray = [NSMutableArray new];
+    if ([JSONType isEqualToString:@"post"]) {
+        for (NSDictionary *currentPost in JSON) {
+            JWCRedditPost *newPost = [JWCRedditPost new];
+            NSDictionary *postData = [currentPost objectForKey:@"data"];
+            newPost.author = [postData objectForKey:@"author"];
+            newPost.created = (NSInteger)[postData objectForKey:@"created"];
+            newPost.downs = (NSInteger)[postData objectForKey:@"downs"];
+            newPost.ups = (NSInteger)[postData objectForKey:@"ups"];
+            newPost.postID = [postData objectForKey:@"id"];
+            newPost.numberOfcomments = (NSInteger)[postData objectForKey:@"num_comments"];
+            newPost.commentsLink = [postData objectForKey:@"permalink"];
+            newPost.subreddit = [postData objectForKey:@"subreddit"];
+            newPost.thumbnailURL = [NSURL URLWithString:[postData objectForKey:@"thumbnail"]];
+            newPost.title = [postData objectForKey:@"title"];
+            newPost.url = [postData objectForKey:@"url"];
+            
+            [parsedJSONArray addObject:newPost];
+        }
+    }
+    
+    if ([JSONType isEqualToString:@"subreddit"]) {
+        for (NSDictionary *currentSubreddit in JSON) {
+            JWCSubreddit *newSubreddit = [JWCSubreddit new];
+            NSDictionary *subredditData = [currentSubreddit objectForKey:@"data"];
+            newSubreddit.created = (NSInteger)[subredditData objectForKey:@"created"];
+            newSubreddit.description = [subredditData objectForKey:@"description"];
+            newSubreddit.displayName = [subredditData objectForKey:@"display_name"];
+            newSubreddit.headerImage = [subredditData objectForKey:@"header_img"];
+            newSubreddit.publicDescription = [subredditData objectForKey:@"public_description"];
+            newSubreddit.title = [subredditData objectForKey:@"title"];
+            newSubreddit.subscribers = (NSInteger)[subredditData objectForKey:@"subscribers"];
+            newSubreddit.url = [subredditData objectForKey:@"url"];
+            
+            [parsedJSONArray addObject:newSubreddit];
+        }
+    }
+    
+    return  parsedJSONArray;
 }
 
 @end

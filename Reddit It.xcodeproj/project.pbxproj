@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6B5AA7C618F4746A00A1898C /* KGModal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B5AA7C518F4746A00A1898C /* KGModal.m */; };
 		6B98520018F5C01600B86FB5 /* JWCRedditPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9851FF18F5C01600B86FB5 /* JWCRedditPost.m */; };
+		6BC514BF18F5D8DA003BD238 /* JWCSubreddit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC514BE18F5D8DA003BD238 /* JWCSubreddit.m */; };
+		6BC514C218F5E93F003BD238 /* JWCViewControllerPostComments.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC514C118F5E93F003BD238 /* JWCViewControllerPostComments.m */; };
 		AE339E9518F2082900772111 /* JWCViewControllerOauth.m in Sources */ = {isa = PBXBuildFile; fileRef = AE339E9418F2082900772111 /* JWCViewControllerOauth.m */; };
 		AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5C8FC118F0B740001EB920 /* JWCRedditController.m */; };
 		AE7A8B1618F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m in Sources */ = {isa = PBXBuildFile; fileRef = AE7A8B1518F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m */; };
@@ -47,6 +49,10 @@
 		6B5AA7C518F4746A00A1898C /* KGModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGModal.m; sourceTree = "<group>"; };
 		6B9851FE18F5C01600B86FB5 /* JWCRedditPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCRedditPost.h; sourceTree = "<group>"; };
 		6B9851FF18F5C01600B86FB5 /* JWCRedditPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCRedditPost.m; sourceTree = "<group>"; };
+		6BC514BD18F5D8DA003BD238 /* JWCSubreddit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCSubreddit.h; sourceTree = "<group>"; };
+		6BC514BE18F5D8DA003BD238 /* JWCSubreddit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCSubreddit.m; sourceTree = "<group>"; };
+		6BC514C018F5E93F003BD238 /* JWCViewControllerPostComments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCViewControllerPostComments.h; sourceTree = "<group>"; };
+		6BC514C118F5E93F003BD238 /* JWCViewControllerPostComments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCViewControllerPostComments.m; sourceTree = "<group>"; };
 		AE339E9318F2082900772111 /* JWCViewControllerOauth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCViewControllerOauth.h; sourceTree = "<group>"; };
 		AE339E9418F2082900772111 /* JWCViewControllerOauth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCViewControllerOauth.m; sourceTree = "<group>"; };
 		AE5C8FC018F0B740001EB920 /* JWCRedditController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCRedditController.h; sourceTree = "<group>"; };
@@ -108,6 +114,8 @@
 		6B98520118F5C01A00B86FB5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6BC514BD18F5D8DA003BD238 /* JWCSubreddit.h */,
+				6BC514BE18F5D8DA003BD238 /* JWCSubreddit.m */,
 				6B9851FE18F5C01600B86FB5 /* JWCRedditPost.h */,
 				6B9851FF18F5C01600B86FB5 /* JWCRedditPost.m */,
 			);
@@ -166,6 +174,8 @@
 				AEF8A49E18F07D0000173A9F /* JWCViewController.m */,
 				AE7A8B1818F0F5C10039A9CE /* JWCViewControllerSubredditPosts.h */,
 				AE7A8B1918F0F5C10039A9CE /* JWCViewControllerSubredditPosts.m */,
+				6BC514C018F5E93F003BD238 /* JWCViewControllerPostComments.h */,
+				6BC514C118F5E93F003BD238 /* JWCViewControllerPostComments.m */,
 				AEAB980018F1EA420069C9D7 /* JWCViewControllerPostDetails.h */,
 				AEAB980118F1EA420069C9D7 /* JWCViewControllerPostDetails.m */,
 				AE339E9318F2082900772111 /* JWCViewControllerOauth.h */,
@@ -313,10 +323,12 @@
 				AEAB980218F1EA420069C9D7 /* JWCViewControllerPostDetails.m in Sources */,
 				AEF8A49218F07D0000173A9F /* main.m in Sources */,
 				AEF8A49618F07D0000173A9F /* JWCAppDelegate.m in Sources */,
+				6BC514C218F5E93F003BD238 /* JWCViewControllerPostComments.m in Sources */,
 				6B5AA7C618F4746A00A1898C /* KGModal.m in Sources */,
 				AEF8A4C218F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m in Sources */,
 				AEF8A49F18F07D0000173A9F /* JWCViewController.m in Sources */,
 				AE5C8FC218F0B740001EB920 /* JWCRedditController.m in Sources */,
+				6BC514BF18F5D8DA003BD238 /* JWCSubreddit.m in Sources */,
 				AE339E9518F2082900772111 /* JWCViewControllerOauth.m in Sources */,
 				AE7A8B1A18F0F5C10039A9CE /* JWCViewControllerSubredditPosts.m in Sources */,
 				AE7A8B1618F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.m in Sources */,
