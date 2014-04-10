@@ -244,22 +244,22 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *currentText;
-    UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:18];
     CGSize textSize = CGSizeMake(265.0, MAXFLOAT);
     
     switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
         case 0:
         {
-            JWCCollectionViewCellRedditPost *currentCell = (JWCCollectionViewCellRedditPost *)[collectionView cellForItemAtIndexPath:indexPath];
-            currentText = currentCell.labelPostText.text;
+            JWCRedditPost *currentPost = self.selectedArray[indexPath.row];
+            currentText = currentPost.title;
             break;
         }
         case 1:
         {
-            JWCCollectionViewCellSubreddit *currentCell = (JWCCollectionViewCellSubreddit *)[collectionView cellForItemAtIndexPath:indexPath];
-            currentText = currentCell.labelDescription.text;
-        }
+            JWCSubreddit *currentSubreddit = self.selectedArray[indexPath.row];
+            currentText = currentSubreddit.publicDescription;
             break;
+        }
         default:
             break;
     }
@@ -267,8 +267,12 @@
                                                           options:NSStringDrawingUsesLineFragmentOrigin
                                                        attributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]
                                                           context:nil];
-    
-    CGSize roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame), ceil(boundingRect.size.height)+20);
+    CGSize roundedSize;
+    if (boundingRect.size.height <= 100) {
+        roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame), 100);
+    } else {
+        roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame), ceil(boundingRect.size.height));
+    }
     
     return roundedSize;
 }

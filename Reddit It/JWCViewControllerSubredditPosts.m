@@ -122,6 +122,30 @@
     
 }
 
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *currentText;
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:18];
+    CGSize textSize = CGSizeMake(265.0, MAXFLOAT);
+    
+    JWCRedditPost *currentPost = self.redditPosts[indexPath.row];
+    currentText = currentPost.title;
+
+    CGRect boundingRect = [currentText boundingRectWithSize:textSize
+                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                 attributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]
+                                                    context:nil];
+    CGSize roundedSize;
+    if (boundingRect.size.height <= 100) {
+        roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame)-10, 100);
+    } else {
+        roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame)-10, ceil(boundingRect.size.height));
+    }
+    
+    return roundedSize;
+}
+
 #pragma mark - JWCRedditControllerDelegate
 - (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after
 {
@@ -138,13 +162,6 @@
     NSLog(@"Image Downloaded");
     
     [self.collectionViewPosts reloadData];
-}
-
-#pragma mark - UICollectionViewDelegateFlowLayout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGSize size = CGSizeMake(CGRectGetWidth(self.collectionViewPosts.frame)-10, 80);
-    return size;
 }
 
 #pragma mark - Rotation Handling
