@@ -240,8 +240,34 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize size = CGSizeMake(CGRectGetWidth(self.collectionViewSubreddits.frame)-10, 80);
-    return size;
+    NSString *currentText;
+    UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
+    CGSize textSize = CGSizeMake(265.0, MAXFLOAT);
+    
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
+        case 0:
+        {
+            JWCCollectionViewCellRedditPost *currentCell = (JWCCollectionViewCellRedditPost *)[collectionView cellForItemAtIndexPath:indexPath];
+            currentText = currentCell.labelPostText.text;
+            break;
+        }
+        case 1:
+        {
+            JWCCollectionViewCellSubreddit *currentCell = (JWCCollectionViewCellSubreddit *)[collectionView cellForItemAtIndexPath:indexPath];
+            currentText = currentCell.labelDescription.text;
+        }
+            break;
+        default:
+            break;
+    }
+    CGRect boundingRect = [currentText boundingRectWithSize:textSize
+                                                          options:NSStringDrawingUsesLineFragmentOrigin
+                                                       attributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]
+                                                          context:nil];
+    
+    CGSize roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame), ceil(boundingRect.size.height)+20);
+    
+    return roundedSize;
 }
 
 #pragma mark - UIScrollViewDelegate
