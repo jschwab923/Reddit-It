@@ -356,10 +356,10 @@
             </objects>
             <point key="canvasLocation" x="1211" y="917"/>
         </scene>
-        <!--View Controller-->
+        <!--View Controller Post Comments-->
         <scene sceneID="sbb-sJ-sHt">
             <objects>
-                <viewController id="xek-jY-EUa" sceneMemberID="viewController">
+                <viewController id="xek-jY-EUa" customClass="JWCViewControllerPostComments" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aFp-Mi-1hT"/>
                         <viewControllerLayoutGuide type="bottom" id="K0O-MO-uhx"/>
