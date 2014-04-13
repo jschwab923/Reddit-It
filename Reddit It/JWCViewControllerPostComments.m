@@ -7,8 +7,12 @@
 //
 
 #import "JWCViewControllerPostComments.h"
+#import "JWCRedditController.h"
 
-@interface JWCViewControllerPostComments ()
+@interface JWCViewControllerPostComments () <JWCRedditControllerDelegate>
+
+@property (nonatomic) JWCRedditController *redditController;
+@property (nonatomic) NSMutableArray *comments;
 
 @end
 
@@ -17,13 +21,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.redditController = [JWCRedditController new];
+    self.redditController.delegate = self;
+    
+    [self.redditController getListOfCommentsFromPost:self.commentsURL];
+    
+    self.comments = [NSMutableArray new];
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after
+{
+    [self.redditController parseCommentTree:JSON withLevel:0 andCommentsArray:self.comments];
+    NSLog(@"%@", self.comments);    
 }
 
 /*

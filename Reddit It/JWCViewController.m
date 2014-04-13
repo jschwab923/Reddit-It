@@ -12,9 +12,12 @@
 #import "JWCViewControllerSubredditPosts.h"
 #import "JWCCollectionVIewCellRedditPost.h"
 #import "JWCViewControllerPostDetails.h"
+#import "JWCViewControllerPostComments.h"
 #import "KGModal.h"
 #import "JWCRedditPost.h"
 #import "JWCSubreddit.h"
+#import "NSString+JWCSizeOfString.h"
+
 
 @interface JWCViewController ()
 <JWCRedditControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, UISearchBarDelegate>
@@ -107,6 +110,7 @@
     
     self.selectedArray = self.hotPosts;
     [self.redditController getListOfPostsWithSection:@"hot"];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -243,8 +247,7 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGSize size = CGSizeMake(CGRectGetWidth(self.collectionViewSubreddits.frame)-10, 80);
-    return size;
+    return CGSizeMake(0, 0);
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -445,11 +448,18 @@
         {
             if (!_seguePerformed) {
                 _seguePerformed = YES;
-                JWCViewControllerPostDetails *destinationViewController = (JWCViewControllerPostDetails *)segue.destinationViewController;
-            
-                JWCRedditPost *selectedPost = [self.selectedArray objectAtIndex:_selectedIndexPath.row];
-                NSURL *postURL = [NSURL URLWithString:selectedPost.url];
-                [destinationViewController setPostURL:postURL];
+                if ([segue.identifier isEqualToString:@"LinkSegue"]) {
+                    JWCViewControllerPostDetails *destinationViewController = (JWCViewControllerPostDetails *)segue.destinationViewController;
+                
+                    JWCRedditPost *selectedPost = [self.selectedArray objectAtIndex:_selectedIndexPath.row];
+                    NSURL *postURL = [NSURL URLWithString:selectedPost.url];
+                    [destinationViewController setPostURL:postURL];
+                } else if ([segue.identifier isEqualToString:@"CommentsSegue"]) {
+                    JWCViewControllerPostComments *destinationViewController = (JWCViewControllerPostComments *)segue.destinationViewController;
+                    
+                    JWCRedditPost *selectedPost = [self.selectedArray objectAtIndex:_selectedIndexPath.row];
+                    destinationViewController.commentsURL = selectedPost.commentsLink;
+                }
             }
             break;
         }

@@ -78,7 +78,7 @@
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *postURL = [NSURL URLWithString:urlString];
     
-    [self queryRedditWithURL:postURL];
+    [self queryRedditWithURL:postURL andLevel:0];
 }
 
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count
@@ -95,7 +95,7 @@
     }
     
     NSURL *url = [NSURL URLWithString:subbredditURL];
-    [self queryRedditWithURL:url];
+    [self queryRedditWithURL:url andLevel:0];
 }
 
 - (void)searchSubredditsWithQuery:(NSString *)query
@@ -104,7 +104,17 @@
     queryString = [queryString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *url = [NSURL URLWithString:queryString];
     
-    [self queryRedditWithURL:url];
+    [self queryRedditWithURL:url andLevel:0];
+}
+
+- (void)getListOfCommentsFromPost:(NSString *)commentsURL
+{
+    NSString *postsURL = [NSString stringWithFormat:SUBREDDIT_POSTS_URL, commentsURL];
+    postsURL = [postsURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
+    NSURL *queryURL = [NSURL URLWithString:postsURL];
+    
+    [self queryRedditWithURL:queryURL andLevel:1];
 }
 
 - (void)getListOfPostsFromSubreddit:(NSString *)subreddit
@@ -114,7 +124,7 @@
     
     NSURL *queryURL = [NSURL URLWithString:postsURL];
     
-    [self queryRedditWithURL:queryURL];
+    [self queryRedditWithURL:queryURL andLevel:0];
 }
 
 // Takes a dictionary that either contains and array of post dictionarys, or just one post dictionary.
@@ -142,7 +152,7 @@
     
 }
 
-- (void)queryRedditWithURL:(NSURL *)url
+- (void)queryRedditWithURL:(NSURL *)url andLevel:(NSInteger)level
 {
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:sessionConfig];
@@ -150,13 +160,31 @@
     NSURLSessionDataTask *dataTask = [urlSession dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
         if (!error) {
-            NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
             
-            NSDictionary *dataDictionary = [responseJSON objectForKey:@"data"];
-            NSArray *children = [dataDictionary objectForKey:@"children"];
-            
-            NSString *after = [dataDictionary objectForKey:@"after"];
-            
+            NSArray *children;
+            NSString *after;
+            switch (level) {
+                case 0:
+                {
+                    NSDictionary *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    NSDictionary *dataDictionary = [responseJSON objectForKey:@"data"];
+                    children = [dataDictionary objectForKey:@"children"];
+                    after = [dataDictionary objectForKey:@"after"];
+                    
+                    break;
+                }
+                case 1:
+                {
+                    NSArray *responseJSON =  [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                    NSDictionary *dataDictionary = [[responseJSON objectAtIndex:1] objectForKey:@"data"];
+                    children = [dataDictionary objectForKey:@"children"];
+                    after = [dataDictionary objectForKey:@"after"];
+                }
+                    break;
+                default:
+                    break;
+            }
+    
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self.delegate finishedLoadingJSON:children withAfter:after];
             });
@@ -175,9 +203,9 @@
             JWCRedditPost *newPost = [JWCRedditPost new];
             NSDictionary *postData = [currentPost objectForKey:@"data"];
             newPost.author = [postData objectForKey:@"author"];
-            newPost.created = (NSInteger)[postData objectForKey:@"created"];
-            newPost.downs = (NSInteger)[postData objectForKey:@"downs"];
-            newPost.ups = (NSInteger)[postData objectForKey:@"ups"];
+            newPost.created = (int)[postData objectForKey:@"created"];
+            newPost.downs = (int)[postData objectForKey:@"downs"];
+            newPost.ups = (int)[postData objectForKey:@"ups"];
             newPost.postID = [postData objectForKey:@"id"];
             newPost.numberOfcomments = (NSInteger)[postData objectForKey:@"num_comments"];
             newPost.commentsLink = [postData objectForKey:@"permalink"];
@@ -194,20 +222,61 @@
         for (NSDictionary *currentSubreddit in JSON) {
             JWCSubreddit *newSubreddit = [JWCSubreddit new];
             NSDictionary *subredditData = [currentSubreddit objectForKey:@"data"];
-            newSubreddit.created = (NSInteger)[subredditData objectForKey:@"created"];
+            newSubreddit.created = (int)[subredditData objectForKey:@"created"];
             newSubreddit.description = [subredditData objectForKey:@"description"];
             newSubreddit.displayName = [subredditData objectForKey:@"display_name"];
             newSubreddit.headerImage = [subredditData objectForKey:@"header_img"];
             newSubreddit.publicDescription = [subredditData objectForKey:@"public_description"];
             newSubreddit.title = [subredditData objectForKey:@"title"];
-            newSubreddit.subscribers = (NSInteger)[subredditData objectForKey:@"subscribers"];
+            newSubreddit.subscribers = (int)[subredditData objectForKey:@"subscribers"];
             newSubreddit.url = [subredditData objectForKey:@"url"];
             
             [parsedJSONArray addObject:newSubreddit];
         }
     }
     
-    return  parsedJSONArray;
+    return parsedJSONArray;
+}
+
+- (void)parseCommentTree:(NSArray *)JSON withLevel:(int)level andCommentsArray:(NSMutableArray *)comments
+{
+    for (NSDictionary *commentsDictionary in JSON) {
+        
+        if (![[commentsDictionary objectForKey:@"kind"] isEqualToString:@"t1"]) {
+            continue;
+        }
+        
+        NSDictionary *commentsData = [commentsDictionary objectForKey:@"data"];
+        
+        JWCPostComment *newComment = [JWCPostComment new];
+        newComment.author = [commentsData objectForKey:@"author"];
+        newComment.body = [commentsData objectForKey:@"body"];
+        newComment.created = (int)[commentsData objectForKey:@"created"];
+        newComment.downs = (int)[commentsData objectForKey:@"downs"];
+        newComment.ups = (int)[commentsData objectForKey:@"ups"];
+        newComment.level = level;
+        
+        
+        if (![[commentsData objectForKey:@"author"] isEqualToString:@""]) {
+            [comments addObject:newComment];
+            if ([[commentsData objectForKey:@"replies"] isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *replies = [commentsData objectForKey:@"replies"];
+                NSDictionary *repliesData = [replies objectForKey:@"data"];
+                NSArray *repliesChildren = [repliesData objectForKey:@"children"];
+                [self parseRepliesTree:repliesChildren withLevel:level+1 andRepliesArray:comments];
+            }
+        }
+        
+    }
+}
+
+- (void)parseRepliesTree:(NSArray *)JSONParent withLevel:(int)level andRepliesArray:(NSMutableArray *)replies
+{
+    if (JSONParent == NULL) {
+        return;
+    }
+    
+    [self parseCommentTree:JSONParent withLevel:level andCommentsArray:replies];
 }
 
 @end
