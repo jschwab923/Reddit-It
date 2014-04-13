@@ -16,6 +16,7 @@
 
 @property (nonatomic) JWCRedditController *redditController;
 @property (nonatomic) NSMutableArray *comments;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionViewComments;
 
 @end
 
@@ -31,6 +32,9 @@
     
     self.comments = [NSMutableArray new];
     
+    self.collectionViewComments.dataSource = self;
+    self.collectionViewComments.delegate = self;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -42,40 +46,58 @@
 - (void)finishedLoadingJSON:(NSArray *)JSON withAfter:(NSString *)after
 {
     [self.redditController parseCommentTree:JSON withLevel:0 andCommentsArray:self.comments];
-    NSLog(@"%@", self.comments);    
+    [self.collectionViewComments reloadData];
+    [self.collectionViewComments setNeedsLayout];
 }
 
 #pragma UICollectionViewDatasource
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [self.comments count];
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     JWCCollectionViewCellPostComment *currentCell = (JWCCollectionViewCellPostComment *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CommentCell" forIndexPath:indexPath];
+    if ([self.comments count] > 0) {
+        JWCPostComment *currentComment = self.comments[indexPath.row];
+        NSInteger points = currentComment.ups - currentComment.downs;
+        NSInteger created = currentComment.created/1000/60/60/60;
+        NSString *pointsString = [NSString stringWithFormat:@"%lu points %lu hours ago", points, created];
+        NSString *commentInfo = [NSString stringWithFormat:@"%@ %@", currentComment.author, pointsString];
+        
+        currentCell.labelCommentInfo.text = commentInfo;
+        currentCell.labelCommentText.text = currentComment.body;
+    }
     return currentCell;
 }
 
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSString *text;
-//    NSString *font;
-//    NSInteger fontSize;
-//    NSInteger heightAdjustment = 0;
-//    
-//    NSInteger width = CGRectGetWidth(self.col.frame);
-//    font = @"Helvetica-Neue";
-//    fontSize = 18;
-//    
-//    JWCCollectionViewCellPostComment *currentCommentCell = (JWCCollectionViewCellPostComment *)[collectionView cellForItemAtIndexPath:indexPath];
-//    text = [NSString stringWithFormat:@"%@%@", currentCommentCell];
-//    heightAdjustment = 20;
-//    
-//    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
-//    if (size.height < 80) {
-//        size.height = 90;
-//    } else {
-//        size.height += heightAdjustment;
-//    }
-//    size.width -= 10;
-//    return size;
-//}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *text;
+    NSString *font;
+    NSInteger fontSize;
+    NSInteger heightAdjustment = 0;
+    
+    JWCPostComment *currentComment = self.comments[indexPath.row];
+    
+    NSInteger width = CGRectGetWidth(self.collectionViewComments.frame);
+    font = @"Helvetica-Neue";
+    fontSize = 18;
+    
+    JWCCollectionViewCellPostComment *currentCommentCell = (JWCCollectionViewCellPostComment *)[collectionView cellForItemAtIndexPath:indexPath];
+    text = [NSString stringWithFormat:@"%@%@", currentCommentCell.labelCommentInfo, currentCommentCell.labelCommentText];
+    heightAdjustment = 20;
+    
+    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
+    if (size.height < 80) {
+        size.height = 90;
+    } else {
+        size.height += heightAdjustment;
+    }
+    size.width -= 10 + currentComment.level*5;
+    return size;
+}
 
 /*
 #pragma mark - Navigation

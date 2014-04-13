@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface JWCCollectionViewCellPostComment : UICollectionViewCell
+@property (weak, nonatomic) IBOutlet UILabel *labelCommentInfo;
+@property (weak, nonatomic) IBOutlet UILabel *labelCommentText;
 
 @end
