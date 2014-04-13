@@ -11,6 +11,7 @@
 #import "JWCCollectionViewCellRedditPost.h"
 #import "JWCViewControllerPostDetails.h"
 #import "JWCViewControllerPostComments.h"
+#import "NSString+JWCSizeOfString.h"
 #import "KGModal.h"
 
 @interface JWCViewControllerSubredditPosts ()
@@ -125,25 +126,27 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *currentText;
-    UIFont *font = [UIFont fontWithName:@"Helvetica" size:18];
-    CGSize textSize = CGSizeMake(265.0, MAXFLOAT);
+    NSString *text;
+    NSString *font;
+    NSInteger fontSize;
+    NSInteger heightAdjustment = 0;
     
-    JWCRedditPost *currentPost = self.redditPosts[indexPath.row];
-    currentText = currentPost.title;
-
-    CGRect boundingRect = [currentText boundingRectWithSize:textSize
-                                                    options:NSStringDrawingUsesLineFragmentOrigin
-                                                 attributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]
-                                                    context:nil];
-    CGSize roundedSize;
-    if (boundingRect.size.height <= 100) {
-        roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame)-10, 100);
+    NSInteger width = CGRectGetWidth(self.collectionViewPosts.frame);
+    font = @"Helvetica-Neue";
+    fontSize = 18;
+    
+    JWCCollectionViewCellRedditPost *currentPostCell = (JWCCollectionViewCellRedditPost *)[collectionView cellForItemAtIndexPath:indexPath];
+    text = [NSString stringWithFormat:@"%@%@", currentPostCell.labelPostText.text, currentPostCell.labelPostInfo.text];
+    heightAdjustment = 20;
+    
+    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
+    if (size.height < 80) {
+        size.height = 90;
     } else {
-        roundedSize = CGSizeMake(CGRectGetWidth(collectionView.frame)-10, ceil(boundingRect.size.height));
+        size.height += heightAdjustment;
     }
-    
-    return roundedSize;
+    size.width -= 10;
+    return size;
 }
 
 #pragma mark - JWCRedditControllerDelegate
@@ -178,7 +181,7 @@
         if ([segue.identifier isEqualToString:@"LinkSegue"]) {
             _seguePerformed = YES;
             JWCViewControllerPostDetails *vc = (JWCViewControllerPostDetails *)[segue destinationViewController];
-        
+            
             vc.postURL = [NSURL URLWithString:selectedPost.url];
         } else if ([segue.identifier isEqualToString:@"CommentsSegue"]) {
             JWCViewControllerPostComments *vc = (JWCViewControllerPostComments *)[segue destinationViewController];

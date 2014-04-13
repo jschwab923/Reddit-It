@@ -20,9 +20,8 @@
     CGSize textSize = CGSizeMake(265, MAXFLOAT);
     
     CGRect boundingRect = [string boundingRectWithSize:textSize
-                                                options:NSStringDrawingUsesLineFragmentOrigin
-                                                                       attributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil]
-                                                                          context:nil];
+                                               options:NSStringDrawingUsesLineFragmentOrigin
+                                            attributes:[NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, nil] context:nil];
     
     CGSize roundedSize = CGSizeMake(width, ceil(boundingRect.size.height));
     

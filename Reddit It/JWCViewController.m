@@ -247,7 +247,42 @@
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(0, 0);
+    
+    NSString *text;
+    NSString *font;
+    NSInteger fontSize;
+    NSInteger heightAdjustment = 0;
+    
+    NSInteger width = CGRectGetWidth(self.collectionViewSubreddits.frame);
+    font = @"Helvetica-Neue";
+    fontSize = 18;
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
+        case 0:
+        {
+            JWCCollectionViewCellRedditPost *currentPostCell = (JWCCollectionViewCellRedditPost *)[collectionView cellForItemAtIndexPath:indexPath];
+            text = [NSString stringWithFormat:@"%@%@", currentPostCell.labelPostText.text, currentPostCell.labelPostInfo.text];
+            heightAdjustment = 20;
+            break;
+        }
+        case 1:
+        {
+            JWCCollectionViewCellSubreddit *currentSubredditCell = (JWCCollectionViewCellSubreddit *)[collectionView cellForItemAtIndexPath:indexPath];
+            text = [NSString stringWithFormat:@"%@%@", currentSubredditCell.labelSubredditTitle.text,currentSubredditCell.labelDescription.text];
+            heightAdjustment = 20;
+            break;
+        }
+        default:
+            break;
+    }
+    
+    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
+    if (size.height < 80) {
+        size.height = 90;
+    } else {
+        size.height += heightAdjustment;
+    }
+    size.width -= 10;
+    return size;
 }
 
 #pragma mark - UIScrollViewDelegate

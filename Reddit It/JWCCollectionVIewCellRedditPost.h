@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *labelPostText;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewThumbnail;
+@property (weak, nonatomic) IBOutlet UILabel *labelPostInfo;
 
 @end

@@ -21,27 +21,27 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="bWd-pg-FjN">
-                                    <size key="itemSize" width="315" height="80"/>
+                                    <size key="itemSize" width="310" height="80"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SubredditCell" id="PiW-Ew-3Sb" customClass="JWCCollectionViewCellSubreddit">
-                                        <rect key="frame" x="3" y="0.0" width="315" height="80"/>
+                                        <rect key="frame" x="5" y="0.0" width="310" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="315" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="310" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subreddit Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQM-RS-OLD">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Subreddit Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQM-RS-OLD">
                                                     <rect key="frame" x="20" y="0.0" width="260" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="229" translatesAutoresizingMaskIntoConstraints="NO" id="4Pq-im-IAP">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="229" translatesAutoresizingMaskIntoConstraints="NO" id="4Pq-im-IAP">
                                                     <rect key="frame" x="31" y="20" width="229" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <constraints>
@@ -70,43 +70,32 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PostCell" id="ZbD-qX-Ncr" customClass="JWCCollectionViewCellRedditPost">
-                                        <rect key="frame" x="3" y="80" width="315" height="90"/>
+                                        <rect key="frame" x="5" y="80" width="310" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="315" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="310" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fxR-Vk-OJh">
                                                     <rect key="frame" x="15" y="10" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUo-ix-6D7">
-                                                    <rect key="frame" x="260" y="10" width="30" height="16"/>
+                                                <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aUo-ix-6D7">
+                                                    <rect key="frame" x="248" y="10" width="56" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <state key="normal" title="Up">
+                                                    <state key="normal" image="ChevronUp">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="969-qG-4ol">
-                                                    <rect key="frame" x="255" y="53" width="40" height="17"/>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="969-qG-4ol">
+                                                    <rect key="frame" x="255" y="53" width="79" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <state key="normal" title="Down">
+                                                    <state key="normal" image="ChevronDown">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stu-QN-yhJ">
-                                                    <rect key="frame" x="20" y="66" width="275" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <state key="normal" title="100 Comments. Posted by jschwab923 in AskReddit">
-                                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Votes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRp-zR-7mm">
-                                                    <rect key="frame" x="252" y="29" width="43" height="21"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRp-zR-7mm">
+                                                    <rect key="frame" x="255" y="29" width="43" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -119,12 +108,20 @@
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="100 Comments Authored by jschwab923 in AskReddit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="275" translatesAutoresizingMaskIntoConstraints="NO" id="tyi-NT-4YW">
+                                                    <rect key="frame" x="20" y="69" width="275" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <size key="customSize" width="315" height="90"/>
+                                        <size key="customSize" width="310" height="90"/>
                                         <connections>
                                             <outlet property="imageViewThumbnail" destination="fxR-Vk-OJh" id="kpw-5U-rTe"/>
+                                            <outlet property="labelPostInfo" destination="tyi-NT-4YW" id="ZVr-eY-pck"/>
                                             <outlet property="labelPostText" destination="Ftu-dW-kmy" id="1lo-bB-TgR"/>
                                         </connections>
                                     </collectionViewCell>
@@ -276,17 +273,21 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PostCell" id="MWE-Q1-3em" customClass="JWCCollectionViewCellRedditPost">
-                                        <rect key="frame" x="3" y="0.0" width="315" height="90"/>
+                                        <rect key="frame" x="5" y="0.0" width="310" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="315" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="310" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z5h-3K-iwq">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z5h-3K-iwq">
                                                     <rect key="frame" x="15" y="10" width="60" height="60"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="60" id="eYG-en-bvi"/>
+                                                        <constraint firstAttribute="height" constant="60" id="nko-Ou-azM"/>
+                                                    </constraints>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJg-4i-Xb2">
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IJg-4i-Xb2">
                                                     <rect key="frame" x="260" y="10" width="30" height="16"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -294,41 +295,62 @@
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhq-9R-oiM">
-                                                    <rect key="frame" x="255" y="53" width="40" height="17"/>
+                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhq-9R-oiM">
+                                                    <rect key="frame" x="255" y="46" width="40" height="24"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <state key="normal" title="Down">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LP-3u-fvi">
-                                                    <rect key="frame" x="20" y="66" width="275" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                    <state key="normal" title="100 Comments. Posted by jschwab923 in AskReddit">
-                                                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                </button>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Votes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jdP-u9-qZ1">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Votes" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jdP-u9-qZ1">
                                                     <rect key="frame" x="252" y="29" width="43" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Subreddit Post" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="157" translatesAutoresizingMaskIntoConstraints="NO" id="AyT-iv-qcB">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subreddit Post" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="157" translatesAutoresizingMaskIntoConstraints="NO" id="AyT-iv-qcB">
                                                     <rect key="frame" x="83" y="0.0" width="157" height="70"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="157" id="MNS-lQ-b7f"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100 Comments Authored by jschwab923 in AskReddit" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="k84-XK-LEw">
+                                                    <rect key="frame" x="15" y="71" width="280" height="12"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
-                                        <size key="customSize" width="315" height="90"/>
+                                        <constraints>
+                                            <constraint firstItem="z5h-3K-iwq" firstAttribute="top" secondItem="MWE-Q1-3em" secondAttribute="top" constant="10" id="3VM-4j-ENU"/>
+                                            <constraint firstItem="jdP-u9-qZ1" firstAttribute="top" secondItem="IJg-4i-Xb2" secondAttribute="bottom" constant="3" id="8Dp-Hb-Mwa"/>
+                                            <constraint firstItem="k84-XK-LEw" firstAttribute="top" secondItem="z5h-3K-iwq" secondAttribute="bottom" constant="1" id="DpU-h5-aXn"/>
+                                            <constraint firstAttribute="trailing" secondItem="IJg-4i-Xb2" secondAttribute="trailing" constant="20" id="E9I-7F-FU5"/>
+                                            <constraint firstItem="AyT-iv-qcB" firstAttribute="top" secondItem="MWE-Q1-3em" secondAttribute="top" id="FAd-4L-3iI"/>
+                                            <constraint firstAttribute="bottom" secondItem="k84-XK-LEw" secondAttribute="bottom" constant="7" id="Gk4-Vu-cfN"/>
+                                            <constraint firstAttribute="trailing" secondItem="k84-XK-LEw" secondAttribute="trailing" constant="15" id="HJg-6e-5yk"/>
+                                            <constraint firstItem="k84-XK-LEw" firstAttribute="top" secondItem="AyT-iv-qcB" secondAttribute="bottom" constant="1" id="L0D-QZ-V4C"/>
+                                            <constraint firstItem="IJg-4i-Xb2" firstAttribute="top" secondItem="MWE-Q1-3em" secondAttribute="top" constant="10" id="S6t-jm-bkO"/>
+                                            <constraint firstItem="z5h-3K-iwq" firstAttribute="leading" secondItem="MWE-Q1-3em" secondAttribute="leading" constant="15" id="U2K-gr-Gcx"/>
+                                            <constraint firstItem="IJg-4i-Xb2" firstAttribute="leading" secondItem="AyT-iv-qcB" secondAttribute="trailing" constant="20" id="dYx-gO-xOn"/>
+                                            <constraint firstItem="lhq-9R-oiM" firstAttribute="leading" secondItem="AyT-iv-qcB" secondAttribute="trailing" constant="15" id="tMO-wz-wpW"/>
+                                            <constraint firstItem="lhq-9R-oiM" firstAttribute="top" secondItem="jdP-u9-qZ1" secondAttribute="bottom" constant="3" id="ups-JZ-nmX"/>
+                                            <constraint firstAttribute="trailing" secondItem="lhq-9R-oiM" secondAttribute="trailing" constant="15" id="wyL-wY-vin"/>
+                                            <constraint firstItem="k84-XK-LEw" firstAttribute="leading" secondItem="MWE-Q1-3em" secondAttribute="leading" constant="15" id="xgs-AP-IcL"/>
+                                            <constraint firstItem="AyT-iv-qcB" firstAttribute="leading" secondItem="z5h-3K-iwq" secondAttribute="trailing" constant="8" id="xrZ-u7-lAZ"/>
+                                            <constraint firstItem="k84-XK-LEw" firstAttribute="top" secondItem="lhq-9R-oiM" secondAttribute="bottom" constant="1" id="xzb-Ii-i1m"/>
+                                            <constraint firstAttribute="trailing" secondItem="jdP-u9-qZ1" secondAttribute="trailing" constant="15" id="zSb-L0-p6g"/>
+                                        </constraints>
+                                        <size key="customSize" width="310" height="90"/>
                                         <connections>
                                             <outlet property="imageViewThumbnail" destination="z5h-3K-iwq" id="E8c-iR-OFR"/>
                                             <outlet property="labelPostText" destination="AyT-iv-qcB" id="aq7-Wq-D7c"/>
@@ -339,12 +361,10 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="b45-uE-4XC" secondAttribute="trailing" id="8Cg-hk-rNQ"/>
-                            <constraint firstItem="b45-uE-4XC" firstAttribute="top" secondItem="7wa-ea-HkS" secondAttribute="bottom" constant="-1" id="Lv4-Xd-xS2"/>
-                            <constraint firstItem="b45-uE-4XC" firstAttribute="leading" secondItem="kp9-y0-zWs" secondAttribute="leading" id="OOG-Zu-Uci"/>
-                            <constraint firstItem="1nc-WH-Lnd" firstAttribute="top" secondItem="b45-uE-4XC" secondAttribute="bottom" id="SAI-eg-KmQ"/>
-                            <constraint firstItem="1nc-WH-Lnd" firstAttribute="top" secondItem="b45-uE-4XC" secondAttribute="bottom" id="WG1-cS-cei"/>
-                            <constraint firstItem="b45-uE-4XC" firstAttribute="top" secondItem="7wa-ea-HkS" secondAttribute="bottom" constant="-1" id="g1g-DO-1Ml"/>
+                            <constraint firstItem="b45-uE-4XC" firstAttribute="leading" secondItem="kp9-y0-zWs" secondAttribute="leading" id="BVX-U8-AjO"/>
+                            <constraint firstAttribute="trailing" secondItem="b45-uE-4XC" secondAttribute="trailing" id="GfG-D9-psd"/>
+                            <constraint firstItem="1nc-WH-Lnd" firstAttribute="top" secondItem="b45-uE-4XC" secondAttribute="bottom" id="slg-H1-sSf"/>
+                            <constraint firstItem="b45-uE-4XC" firstAttribute="top" secondItem="7wa-ea-HkS" secondAttribute="bottom" constant="-1" id="wDg-KU-IP7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="p3u-Jz-gKt"/>
@@ -374,35 +394,30 @@
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mrW-cY-Kjy">
-                                    <size key="itemSize" width="319" height="101"/>
+                                    <size key="itemSize" width="310" height="101"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PostCell" id="uW5-sK-Ncv" customClass="JWCCollectionViewCellRedditPost">
-                                        <rect key="frame" x="1" y="0.0" width="319" height="101"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CommentCell" id="uW5-sK-Ncv" customClass="JWCCollectionViewCellPostComment">
+                                        <rect key="frame" x="5" y="0.0" width="310" height="101"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="319" height="101"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="310" height="101"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Subreddit Post" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="237" translatesAutoresizingMaskIntoConstraints="NO" id="mqU-IO-1Q5">
-                                                    <rect key="frame" x="83" y="0.0" width="237" height="80"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Comment" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="320" translatesAutoresizingMaskIntoConstraints="NO" id="mqU-IO-1Q5">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="101"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sMt-Bg-cOp">
-                                                    <rect key="frame" x="15" y="10" width="60" height="60"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <connections>
-                                            <outlet property="imageViewThumbnail" destination="sMt-Bg-cOp" id="ZnE-PF-vrh"/>
                                             <outlet property="labelPostText" destination="mqU-IO-1Q5" id="hdv-Zg-6og"/>
                                         </connections>
                                     </collectionViewCell>
@@ -463,13 +478,17 @@
             <point key="canvasLocation" x="300" y="89"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ChevronDown" width="32" height="10"/>
+        <image name="ChevronUp" width="32" height="10"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="u3C-Qf-a0Y"/>
-        <segue reference="pcT-ti-ftv"/>
+        <segue reference="Ifu-iE-mMC"/>
+        <segue reference="RuG-AE-tag"/>
     </inferredMetricsTieBreakers>
 </document>

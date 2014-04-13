@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6B3AD4FA18FA0DB0007631B6 /* NSString+JWCSizeOfString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3AD4F918FA0DB0007631B6 /* NSString+JWCSizeOfString.m */; };
 		6B5AA7C618F4746A00A1898C /* KGModal.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B5AA7C518F4746A00A1898C /* KGModal.m */; };
+		6B82464A18FA400200661291 /* JWCCollectionViewCellPostComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B82464918FA400200661291 /* JWCCollectionViewCellPostComment.m */; };
 		6B98520018F5C01600B86FB5 /* JWCRedditPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9851FF18F5C01600B86FB5 /* JWCRedditPost.m */; };
 		6BC514BF18F5D8DA003BD238 /* JWCSubreddit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC514BE18F5D8DA003BD238 /* JWCSubreddit.m */; };
 		6BC514C218F5E93F003BD238 /* JWCViewControllerPostComments.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC514C118F5E93F003BD238 /* JWCViewControllerPostComments.m */; };
@@ -51,6 +52,8 @@
 		6B3AD4F918FA0DB0007631B6 /* NSString+JWCSizeOfString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+JWCSizeOfString.m"; sourceTree = "<group>"; };
 		6B5AA7C418F4746A00A1898C /* KGModal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGModal.h; sourceTree = "<group>"; };
 		6B5AA7C518F4746A00A1898C /* KGModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGModal.m; sourceTree = "<group>"; };
+		6B82464818FA400200661291 /* JWCCollectionViewCellPostComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCCollectionViewCellPostComment.h; sourceTree = "<group>"; };
+		6B82464918FA400200661291 /* JWCCollectionViewCellPostComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCCollectionViewCellPostComment.m; sourceTree = "<group>"; };
 		6B9851FE18F5C01600B86FB5 /* JWCRedditPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCRedditPost.h; sourceTree = "<group>"; };
 		6B9851FF18F5C01600B86FB5 /* JWCRedditPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JWCRedditPost.m; sourceTree = "<group>"; };
 		6BC514BD18F5D8DA003BD238 /* JWCSubreddit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWCSubreddit.h; sourceTree = "<group>"; };
@@ -142,6 +145,8 @@
 		AE7A8B1718F0F5A80039A9CE /* Collection View Cells */ = {
 			isa = PBXGroup;
 			children = (
+				6B82464818FA400200661291 /* JWCCollectionViewCellPostComment.h */,
+				6B82464918FA400200661291 /* JWCCollectionViewCellPostComment.m */,
 				AEF8A4C018F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.h */,
 				AEF8A4C118F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m */,
 				AE7A8B1418F0F5A10039A9CE /* JWCCollectionVIewCellRedditPost.h */,
@@ -343,6 +348,7 @@
 				AEF8A49618F07D0000173A9F /* JWCAppDelegate.m in Sources */,
 				6B3AD4FA18FA0DB0007631B6 /* NSString+JWCSizeOfString.m in Sources */,
 				6BC514C218F5E93F003BD238 /* JWCViewControllerPostComments.m in Sources */,
+				6B82464A18FA400200661291 /* JWCCollectionViewCellPostComment.m in Sources */,
 				6B5AA7C618F4746A00A1898C /* KGModal.m in Sources */,
 				AEF8A4C218F0B4DD00173A9F /* JWCCollectionViewCellSubreddit.m in Sources */,
 				AEF8A49F18F07D0000173A9F /* JWCViewController.m in Sources */,
