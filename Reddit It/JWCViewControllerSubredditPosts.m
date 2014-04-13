@@ -99,28 +99,26 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+    {
     _selectedIndexPath = indexPath;
-    
+
     KGModal *postDetailSelection = [KGModal sharedInstance];
-    
+
     UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 150, 100)];
-    UIButton *viewLink = [[UIButton alloc] initWithFrame:CGRectMake(30, 0, 90, 60)];
+    UIButton *viewLink = [[UIButton alloc] initWithFrame:CGRectMake(30, 0, 90, 30)];
     [viewLink setTitle:@"Link" forState:UIControlStateNormal];
     [viewLink addTarget:self action:@selector(pressedViewLink:)
        forControlEvents:UIControlEventTouchUpInside];
-    
-    UIButton *viewComments = [[UIButton alloc] initWithFrame:CGRectMake(30, 45, 90, 60)];
+
+    UIButton *viewComments = [[UIButton alloc] initWithFrame:CGRectMake(30, 45, 90, 30)];
     [viewComments setTitle:@"Comments" forState:UIControlStateNormal];
-    [viewLink addTarget:self action:@selector(pressedViewComments:)
-       forControlEvents:UIControlEventTouchUpInside];
-    
+    [viewComments addTarget:self action:@selector(pressedViewComments:)
+           forControlEvents:UIControlEventTouchUpInside];
+
     [contentView addSubview:viewLink];
     [contentView addSubview:viewComments];
-    
+
     [postDetailSelection showWithContentView:contentView];
-    
-    
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -199,6 +197,11 @@
 - (void)pressedViewComments:(UIButton *)viewComments
 {
     [self performSegueWithIdentifier:@"CommentsSegue" sender:self];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.collectionViewPosts.collectionViewLayout invalidateLayout];
 }
 
 

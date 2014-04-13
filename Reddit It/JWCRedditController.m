@@ -179,8 +179,8 @@
                     NSDictionary *dataDictionary = [[responseJSON objectAtIndex:1] objectForKey:@"data"];
                     children = [dataDictionary objectForKey:@"children"];
                     after = [dataDictionary objectForKey:@"after"];
-                }
                     break;
+                }
                 default:
                     break;
             }

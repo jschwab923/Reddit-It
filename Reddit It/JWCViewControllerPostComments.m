@@ -99,6 +99,11 @@
     return size;
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.collectionViewComments.collectionViewLayout invalidateLayout];
+}
+
 /*
 #pragma mark - Navigation
 

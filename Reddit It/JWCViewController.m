@@ -528,6 +528,11 @@
     [self performSegueWithIdentifier:@"CommentsSegue" sender:self];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.collectionViewSubreddits.collectionViewLayout invalidateLayout];
+}
+
 #pragma mark - Oauth Methods
 //- (void)startOauth
 //{
