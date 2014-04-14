@@ -109,7 +109,7 @@
     self.postThumbnails = [NSMutableDictionary new];
     
     self.selectedArray = self.hotPosts;
-    [self.redditController getListOfPostsWithSection:@"hot"];
+    [self.redditController getListOfPostsWithSection:@"hot" after:self.subredditAfter count:self.subredditCount];
 
 }
 
@@ -290,10 +290,28 @@
 {
     NSArray *visibleIndexPaths = [self.collectionViewSubreddits indexPathsForVisibleItems];
     
-    for (NSIndexPath *visibleIndexPath in visibleIndexPaths) {
-        if (visibleIndexPath.row == [self.selectedArray count]-1) {
-            [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+    switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
+        case 0:
+        {
+            for (NSIndexPath *visibleIndexPath in visibleIndexPaths) {
+                if (visibleIndexPath.row == [self.selectedArray count]-1) {
+                    NSString *selectedSection = [self.segmentedControlSubredditSections titleForSegmentAtIndex:self.segmentedControlSubredditSections.selectedSegmentIndex];
+                    [self.redditController getListOfPostsWithSection:selectedSection after:self.subredditAfter count:self.subredditCount];
+                }
+            }
+            break;
         }
+        case 1:
+        {
+            for (NSIndexPath *visibleIndexPath in visibleIndexPaths) {
+                if (visibleIndexPath.row == [self.selectedArray count]-1) {
+                    [self.redditController getListOfSubredditsWithType:self.subredditType after:self.subredditAfter count:self.subredditCount];
+                }
+            }
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -399,47 +417,34 @@
 {
     switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
         case 0:
+        {
             [self.postThumbnails removeAllObjects];
             switch (subredditSection.selectedSegmentIndex) {
                 case 0:
                     self.selectedArray = self.hotPosts;
-                    self.subredditType = @"hot";
-                    if ([self.selectedArray count] == 0) {
-                        [self.redditController getListOfPostsWithSection:self.subredditType];
-                    }
                     break;
                 case 1:
                     self.selectedArray = self.theNewPosts;
-                    self.subredditType = @"new";
-                    if ([self.selectedArray count] == 0) {
-                        [self.redditController getListOfPostsWithSection:self.subredditType];
-                    }
                     break;
                 case 2:
                     self.selectedArray = self.risingPosts;
-                    self.subredditType = @"rising";
-                    if ([self.selectedArray count] == 0) {
-                        [self.redditController getListOfPostsWithSection:self.subredditType];
-                    }
                     break;
                 case 3:
                     self.selectedArray = self.controversialPosts;
-                    self.subredditType = @"controversial";
-                    if ([self.selectedArray count] == 0) {
-                        [self.redditController getListOfPostsWithSection:self.subredditType];
-                    }
                     break;
                 case 4:
                     self.selectedArray = self.topPosts;
-                    self.subredditType = @"top";
-                    if ([self.selectedArray count] == 0) {
-                        [self.redditController getListOfPostsWithSection:self.subredditType];
-                    }
                     break;
                 default:
                     break;
             }
+            NSString *selectedSection = [self.segmentedControlSubredditSections titleForSegmentAtIndex:self.segmentedControlSubredditSections.selectedSegmentIndex];
+            self.subredditType = selectedSection;
+            if ([self.selectedArray count] == 0) {
+                [self.redditController getListOfPostsWithSection:self.subredditType after:self.subredditAfter count:self.subredditCount];
+            }
             break;
+        }
         case 1:
             switch (subredditSection.selectedSegmentIndex) {
                 case 0:
@@ -530,6 +535,8 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    _originalCollectionViewFrame = self.collectionViewSubreddits.frame;
+    _originalContainerViewFrame = self.viewContainer.frame;
     [self.collectionViewSubreddits.collectionViewLayout invalidateLayout];
 }
 

@@ -17,9 +17,10 @@
 
 #define SUBREDDIT_URL @"http://www.reddit.com/subreddits/%@.json"
 #define SUBREDDIT_AFTER_URL @"http://www.reddit.com/subreddits/%@.json?after=%@"
-#define SUBREDDIT_AFTER_COUNT_URL @"http://www.reddit.com/subreddits/%@.json?after=%@&count=%i"
+#define SUBREDDIT_AFTER_COUNT_URL @"http://www.reddit.com/subreddits/%@.json?after=%@&count=%lu"
 
 #define MAIN_SECTIONS_URL @"http://www.reddit.com/%@.json"
+#define MAIN_SECTIONS_AFTER_URL @"http://www.reddit.com/%@.json?after=%@&count=%lu"
 
 #define SUBREDDIT_SEARCH_URL @"http://www.reddit.com/subreddits/search.json?q=%@"
 
@@ -72,9 +73,14 @@
     [dataTask resume];
 }
 
-- (void)getListOfPostsWithSection:(NSString *)section
+- (void)getListOfPostsWithSection:(NSString *)section after:(NSString *)after count:(NSInteger)count;
 {
-    NSString *urlString = [NSString stringWithFormat:MAIN_SECTIONS_URL, section];
+    NSString *urlString;
+    if (count) {
+        urlString = [NSString stringWithFormat:MAIN_SECTIONS_AFTER_URL, section, after, count];
+    } else {
+        urlString = [NSString stringWithFormat:MAIN_SECTIONS_URL, section];
+    }
     urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     NSURL *postURL = [NSURL URLWithString:urlString];
     
@@ -117,7 +123,7 @@
     [self queryRedditWithURL:queryURL andLevel:1];
 }
 
-- (void)getListOfPostsFromSubreddit:(NSString *)subreddit
+- (void)getListOfPostsFromSubreddit:(NSString *)subreddit withAfter:(NSString *)after count:(NSInteger)count;
 {
     NSString *postsURL = [NSString stringWithFormat:SUBREDDIT_POSTS_URL, subreddit];
     postsURL = [postsURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];

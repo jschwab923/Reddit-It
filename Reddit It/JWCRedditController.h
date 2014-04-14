@@ -32,10 +32,10 @@
 - (NSURL *)oauthURL;
 - (void)requestAccessToken;
 
-- (void)getListOfPostsWithSection:(NSString *)section;
+- (void)getListOfPostsWithSection:(NSString *)section after:(NSString *)after count:(NSInteger)count;
 - (void)getListOfSubredditsWithType:(NSString *)type after:(NSString *)afterParameter count:(NSInteger)count;
 - (void)searchSubredditsWithQuery:(NSString *)query;
-- (void)getListOfPostsFromSubreddit:(NSString *)subreddit;
+- (void)getListOfPostsFromSubreddit:(NSString *)subreddit withAfter:(NSString *)after count:(NSInteger)count;
 - (void)getListOfCommentsFromPost:(NSString *)commentsURL;
 
 - (void)downloadThumbnailImage:(NSURL *)thumbnailURL andID:(NSNumber *)postID;

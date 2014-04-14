@@ -59,6 +59,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     JWCCollectionViewCellPostComment *currentCell = (JWCCollectionViewCellPostComment *)[collectionView dequeueReusableCellWithReuseIdentifier:@"CommentCell" forIndexPath:indexPath];
+    currentCell.clipsToBounds = NO;
     if ([self.comments count] > 0) {
         JWCPostComment *currentComment = self.comments[indexPath.row];
         NSInteger points = currentComment.ups - currentComment.downs;
@@ -68,6 +69,24 @@
         
         currentCell.labelCommentInfo.text = commentInfo;
         currentCell.labelCommentText.text = currentComment.body;
+        
+//        int currentFarLeft;
+//        switch (currentComment.level) {
+//            case 0:
+//                currentFarLeft = 0;
+//                break;
+//            default:
+//                currentFarLeft = (CGRectGetWidth(self.collectionViewComments.frame)-CGRectGetWidth(currentCell.frame))/currentComment.level;
+//                currentFarLeft *= -1;
+//                break;
+//        }
+//        int count = 0;
+//        for (int i = currentFarLeft; count < 3; i += 10, count++)
+//        {
+//            UIView *line = [[UIView alloc] initWithFrame:CGRectMake(i, 0, 1, CGRectGetHeight(currentCell.frame)+10)];
+//            line.backgroundColor = [UIColor colorWithRed:0.997 green:0.959 blue:1.000 alpha:1.000];
+//            [currentCell addSubview:line];
+//        }
     }
     return currentCell;
 }
@@ -95,7 +114,7 @@
     } else {
         size.height += heightAdjustment;
     }
-    size.width -= 10 + currentComment.level*5;
+    size.width -= 10 + currentComment.level*10;
     return size;
 }
 

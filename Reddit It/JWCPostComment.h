@@ -15,6 +15,6 @@
 @property (nonatomic) NSInteger ups;
 @property (nonatomic) NSInteger downs;
 @property (nonatomic) NSInteger created;
-@property (nonatomic) NSInteger level;
+@property (nonatomic) int level;
 
 @end

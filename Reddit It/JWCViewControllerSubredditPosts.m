@@ -45,7 +45,7 @@
     
     self.postThumbnails = [NSMutableDictionary new];
     
-    [self.redditController getListOfPostsFromSubreddit:self.subreddit.url];
+    [self.redditController getListOfPostsFromSubreddit:self.subreddit.url withAfter:@"" count:nil];
     
 }
 
