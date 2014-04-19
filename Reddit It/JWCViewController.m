@@ -197,7 +197,7 @@
         NSInteger created = ceil(interval/60/60);
         tempCell.labelPostText.text = currentPost.title;
         tempCell.imageViewThumbnail.image = nil;
-        tempCell.labelPostInfo.text = [NSString stringWithFormat:@"Submitted %d hours ago by %@ to %@\n%d comments", (int)created, currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
+        tempCell.labelPostInfo.text = [NSString stringWithFormat:@"Submitted %d hours ago by %@ to /r/%@\n%d comments", (int)created, currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
         if (currentPost.thumbnailURL) {
             if (![self.postThumbnails objectForKey:currentPost.postID]) {
                 [self.redditController downloadThumbnailImage:currentPost.thumbnailURL andID:currentPost.postID];

@@ -97,7 +97,7 @@
         NSInteger created = ceil(interval/60/60);
         redditPostCell.labelPostText.text = currentPost.title;
         redditPostCell.imageViewThumbnail.image = nil;
-        redditPostCell.labelPostInfo.text = [NSString stringWithFormat:@"Submitted %d hours ago by %@ to %@\n%d comments", (int)created, currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
+        redditPostCell.labelPostInfo.text = [NSString stringWithFormat:@"Submitted %d hours ago by %@ to /r/%@\n%d comments", (int)created, currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
     }
     
     return redditPostCell;

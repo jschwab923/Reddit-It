@@ -229,7 +229,7 @@
         for (NSDictionary *currentSubreddit in JSON) {
             JWCSubreddit *newSubreddit = [JWCSubreddit new];
             NSDictionary *subredditData = [currentSubreddit objectForKey:@"data"];
-            double created = [[subredditData objectForKey:@"created"] doubleValue];
+            double created = [[subredditData objectForKey:@"created_utc"] doubleValue];
             newSubreddit.created = [NSDate dateWithTimeIntervalSince1970:created];
             newSubreddit.description = [subredditData objectForKey:@"description"];
             newSubreddit.displayName = [subredditData objectForKey:@"display_name"];
@@ -259,7 +259,7 @@
         JWCPostComment *newComment = [JWCPostComment new];
         newComment.author = [commentsData objectForKey:@"author"];
         newComment.body = [commentsData objectForKey:@"body"];
-        double created = [[commentsData objectForKey:@"created"] doubleValue];
+        double created = [[commentsData objectForKey:@"created_utc"] doubleValue];
         newComment.created = [NSDate dateWithTimeIntervalSince1970:created];
         newComment.downs = (int)[commentsData objectForKey:@"downs"];
         newComment.ups = (int)[commentsData objectForKey:@"ups"];
