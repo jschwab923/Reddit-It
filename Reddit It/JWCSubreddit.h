@@ -16,7 +16,7 @@
 @property (nonatomic) NSString *description;
 @property (nonatomic) NSString *publicDescription;
 @property (nonatomic) NSInteger subscribers;
-@property (nonatomic) NSInteger created;
+@property (nonatomic) NSDate *created;
 @property (nonatomic) NSString *url;
 
 @end

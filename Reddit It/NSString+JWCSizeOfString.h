@@ -11,7 +11,8 @@
 @interface NSString (JWCSizeOfString)
 
 + (CGSize)sizeOfString:(NSString *)string
-             withWidth:(NSInteger)width
+         withCellWidth:(NSInteger)width
+            labelWidth:(NSInteger)labelWidth
                   font:(NSString *)fontType
               fontSize:(NSInteger)fontSize;
 

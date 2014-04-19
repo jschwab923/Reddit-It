@@ -93,6 +93,11 @@
         }
         
         redditPostCell.labelPostText.text = currentPost.title;
+        NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:currentPost.created];
+        NSInteger created = ceil(interval/60/60);
+        redditPostCell.labelPostText.text = currentPost.title;
+        redditPostCell.imageViewThumbnail.image = nil;
+        redditPostCell.labelPostInfo.text = [NSString stringWithFormat:@"Submitted %d hours ago by %@ to %@\n%d comments", (int)created, currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
     }
     
     return redditPostCell;
@@ -133,13 +138,14 @@
     font = @"Helvetica-Neue";
     fontSize = 18;
     
-    JWCCollectionViewCellRedditPost *currentPostCell = (JWCCollectionViewCellRedditPost *)[collectionView cellForItemAtIndexPath:indexPath];
-    text = [NSString stringWithFormat:@"%@%@", currentPostCell.labelPostText.text, currentPostCell.labelPostInfo.text];
+    JWCRedditPost *currentPost = self.redditPosts[indexPath.row];
+    NSString *postInfo = [NSString stringWithFormat:@"Submitted 4 hours ago by %@ to %@ %d comments", currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
+    text = [NSString stringWithFormat:@"%@%@", currentPost.title, postInfo];
     heightAdjustment = 20;
     
-    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
+    CGSize size = [NSString sizeOfString:text withCellWidth:width labelWidth:150 font:font fontSize:fontSize];
     if (size.height < 80) {
-        size.height = 90;
+        size.height = 100;
     } else {
         size.height += heightAdjustment;
     }

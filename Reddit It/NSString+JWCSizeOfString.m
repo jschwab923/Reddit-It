@@ -11,13 +11,14 @@
 @implementation NSString (JWCSizeOfString)
 
 + (CGSize)sizeOfString:(NSString *)string
-             withWidth:(NSInteger)width
+             withCellWidth:(NSInteger)width
+                labelWidth:(NSInteger)labelWidth
                   font:(NSString *)fontType
               fontSize:(NSInteger)fontSize
 {
     // Get height of text
     UIFont *font = [UIFont fontWithName:fontType size:fontSize];
-    CGSize textSize = CGSizeMake(265, MAXFLOAT);
+    CGSize textSize = CGSizeMake(labelWidth, MAXFLOAT);
     
     CGRect boundingRect = [string boundingRectWithSize:textSize
                                                options:NSStringDrawingUsesLineFragmentOrigin

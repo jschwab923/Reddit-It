@@ -208,12 +208,13 @@
         for (NSDictionary *currentPost in JSON) {
             JWCRedditPost *newPost = [JWCRedditPost new];
             NSDictionary *postData = [currentPost objectForKey:@"data"];
+            double created = [[postData objectForKey:@"created_utc"] doubleValue];
             newPost.author = [postData objectForKey:@"author"];
-            newPost.created = (int)[postData objectForKey:@"created"];
+            newPost.created = [NSDate dateWithTimeIntervalSince1970:created];
             newPost.downs = (int)[postData objectForKey:@"downs"];
             newPost.ups = (int)[postData objectForKey:@"ups"];
             newPost.postID = [postData objectForKey:@"id"];
-            newPost.numberOfcomments = (NSInteger)[postData objectForKey:@"num_comments"];
+            newPost.numberOfcomments = [[postData objectForKey:@"num_comments"] longValue];
             newPost.commentsLink = [postData objectForKey:@"permalink"];
             newPost.subreddit = [postData objectForKey:@"subreddit"];
             newPost.thumbnailURL = [NSURL URLWithString:[postData objectForKey:@"thumbnail"]];
@@ -228,7 +229,8 @@
         for (NSDictionary *currentSubreddit in JSON) {
             JWCSubreddit *newSubreddit = [JWCSubreddit new];
             NSDictionary *subredditData = [currentSubreddit objectForKey:@"data"];
-            newSubreddit.created = (int)[subredditData objectForKey:@"created"];
+            double created = [[subredditData objectForKey:@"created"] doubleValue];
+            newSubreddit.created = [NSDate dateWithTimeIntervalSince1970:created];
             newSubreddit.description = [subredditData objectForKey:@"description"];
             newSubreddit.displayName = [subredditData objectForKey:@"display_name"];
             newSubreddit.headerImage = [subredditData objectForKey:@"header_img"];
@@ -257,7 +259,8 @@
         JWCPostComment *newComment = [JWCPostComment new];
         newComment.author = [commentsData objectForKey:@"author"];
         newComment.body = [commentsData objectForKey:@"body"];
-        newComment.created = (int)[commentsData objectForKey:@"created"];
+        double created = [[commentsData objectForKey:@"created"] doubleValue];
+        newComment.created = [NSDate dateWithTimeIntervalSince1970:created];
         newComment.downs = (int)[commentsData objectForKey:@"downs"];
         newComment.ups = (int)[commentsData objectForKey:@"ups"];
         newComment.level = level;

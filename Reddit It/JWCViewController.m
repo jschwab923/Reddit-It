@@ -193,8 +193,11 @@
     if ([currentPostsArray count] > 0) {
         
         JWCRedditPost *currentPost = [currentPostsArray objectAtIndex:row];
+        NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:currentPost.created];
+        NSInteger created = ceil(interval/60/60);
         tempCell.labelPostText.text = currentPost.title;
         tempCell.imageViewThumbnail.image = nil;
+        tempCell.labelPostInfo.text = [NSString stringWithFormat:@"Submitted %d hours ago by %@ to %@\n%d comments", (int)created, currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
         if (currentPost.thumbnailURL) {
             if (![self.postThumbnails objectForKey:currentPost.postID]) {
                 [self.redditController downloadThumbnailImage:currentPost.thumbnailURL andID:currentPost.postID];
@@ -259,15 +262,16 @@
     switch (self.segmentedControlPostSubreddit.selectedSegmentIndex) {
         case 0:
         {
-            JWCCollectionViewCellRedditPost *currentPostCell = (JWCCollectionViewCellRedditPost *)[collectionView cellForItemAtIndexPath:indexPath];
-            text = [NSString stringWithFormat:@"%@%@", currentPostCell.labelPostText.text, currentPostCell.labelPostInfo.text];
-            heightAdjustment = 20;
+            JWCRedditPost *currentPost = self.selectedArray[indexPath.row];
+            NSString *postInfo = [NSString stringWithFormat:@"Submitted 4 hours ago by %@ to %@ %d comments", currentPost.author, currentPost.subreddit, (int)currentPost.numberOfcomments];
+            text = [NSString stringWithFormat:@"%@ %@", currentPost.title, postInfo];
+            heightAdjustment = 50;
             break;
         }
         case 1:
         {
-            JWCCollectionViewCellSubreddit *currentSubredditCell = (JWCCollectionViewCellSubreddit *)[collectionView cellForItemAtIndexPath:indexPath];
-            text = [NSString stringWithFormat:@"%@%@", currentSubredditCell.labelSubredditTitle.text,currentSubredditCell.labelDescription.text];
+            JWCSubreddit *currentSubreddit = self.selectedArray[indexPath.row];
+            text = [NSString stringWithFormat:@"%@%@", currentSubreddit.title, currentSubreddit.publicDescription];
             heightAdjustment = 20;
             break;
         }
@@ -275,9 +279,9 @@
             break;
     }
     
-    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
+    CGSize size = [NSString sizeOfString:text withCellWidth:width labelWidth:150 font:font fontSize:fontSize];
     if (size.height < 80) {
-        size.height = 90;
+        size.height = 100;
     } else {
         size.height += heightAdjustment;
     }

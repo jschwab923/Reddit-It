@@ -11,7 +11,7 @@
 @interface JWCRedditPost : NSObject
 
 @property (nonatomic) NSNumber *postID;
-@property (nonatomic) NSInteger created;
+@property (nonatomic) NSDate *created;
 
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *url;

@@ -63,8 +63,9 @@
     if ([self.comments count] > 0) {
         JWCPostComment *currentComment = self.comments[indexPath.row];
         NSInteger points = currentComment.ups - currentComment.downs;
-        NSInteger created = currentComment.created/1000/60/60/60;
-        NSString *pointsString = [NSString stringWithFormat:@"%lu points %lu hours ago", points, created];
+        NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:currentComment.created] * -1;
+        NSInteger created = interval/60/60;
+        NSString *pointsString = [NSString stringWithFormat:@"%lu points %d hours ago", points, (int)created];
         NSString *commentInfo = [NSString stringWithFormat:@"%@ %@", currentComment.author, pointsString];
         
         currentCell.labelCommentInfo.text = commentInfo;
@@ -108,7 +109,7 @@
     text = [NSString stringWithFormat:@"%@%@", currentCommentCell.labelCommentInfo, currentCommentCell.labelCommentText];
     heightAdjustment = 20;
     
-    CGSize size = [NSString sizeOfString:text withWidth:width font:font fontSize:fontSize];
+    CGSize size = [NSString sizeOfString:text withCellWidth:width labelWidth:CGRectGetWidth(currentCommentCell.labelCommentText.frame) font:font fontSize:fontSize];
     if (size.height < 80) {
         size.height = 90;
     } else {

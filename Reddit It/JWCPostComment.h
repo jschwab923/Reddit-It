@@ -14,7 +14,7 @@
 @property (nonatomic) NSString *author;
 @property (nonatomic) NSInteger ups;
 @property (nonatomic) NSInteger downs;
-@property (nonatomic) NSInteger created;
+@property (nonatomic) NSDate *created;
 @property (nonatomic) int level;
 
 @end
